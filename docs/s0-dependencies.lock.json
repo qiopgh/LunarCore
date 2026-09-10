@@ -1,0 +1,391 @@
+{
+  "schema_version": 1,
+  "source_commit": "04b5de871c62895091c4d65243b2e03997e66f23",
+  "scope": "本轮实际解析的 runtimeClasspath 及本地库哈希；不是自动依赖校验或供应链完整认证。",
+  "platform": "原生 Windows x64",
+  "java": "Temurin 21.0.12.1",
+  "gradle": "8.14.4",
+  "generate_proto": false,
+  "protobuf_gradle_plugin": "0.8.19",
+  "declared_protoc": "3.24.3，未执行",
+  "declared_quickbuf_generator": "1.3.1，未执行",
+  "wrapper_jar_sha256": "7d3a4ac4de1c32b59bc6a4eb8ecb8e612ccd0cf1ae1e99f66902da64df296172",
+  "build_gradle_baseline_sha256": "a61af1065e0e77203f11848eca0c129584814cfd490804cb12d3005212af442c",
+  "artifacts": [
+    {
+      "coordinate": "ch.qos.logback:logback-classic:1.5.32",
+      "filename": "logback-classic-1.5.32.jar",
+      "sha256": "2d4cf592db78be2de4d6140434c2fec170dcb16a09e8c8b7b207dbf5e31b848a",
+      "bytes": 286451
+    },
+    {
+      "coordinate": "ch.qos.logback:logback-core:1.5.32",
+      "filename": "logback-core-1.5.32.jar",
+      "sha256": "6a904d5778d0e361a9692f9cbe68b1b0620ae0f3eda2ec2ed09102755bf036c4",
+      "bytes": 644407
+    },
+    {
+      "coordinate": "com.github.spotbugs:spotbugs-annotations:4.7.3",
+      "filename": "spotbugs-annotations-4.7.3.jar",
+      "sha256": "c0fd1ac2e22acdd46913a2ff74551b71f124457199688698204af4bf3d43165d",
+      "bytes": 15204
+    },
+    {
+      "coordinate": "com.google.code.findbugs:jsr305:3.0.2",
+      "filename": "jsr305-3.0.2.jar",
+      "sha256": "766ad2a0783f2687962c8ad74ceecc38a28b9f72a2d085ee438b7813e928d0c7",
+      "bytes": 19936
+    },
+    {
+      "coordinate": "com.google.code.gson:gson:2.13.2",
+      "filename": "gson-2.13.2.jar",
+      "sha256": "dd0ce1b55a3ed2080cb70f9c655850cda86c206862310009dcb5e5c95265a5e0",
+      "bytes": 289901
+    },
+    {
+      "coordinate": "com.google.errorprone:error_prone_annotations:2.41.0",
+      "filename": "error_prone_annotations-2.41.0.jar",
+      "sha256": "a56e782b5b50811ac204073a355a21d915a2107fce13ec711331ad036f660fcc",
+      "bytes": 20389
+    },
+    {
+      "coordinate": "com.h2database:h2:2.1.214",
+      "filename": "h2-2.1.214.jar",
+      "sha256": "d623cdc0f61d218cf549a8d09f1c391ff91096116b22e2475475fce4fbe72bd0",
+      "bytes": 2543012
+    },
+    {
+      "coordinate": "de.bwaldvogel:mongo-java-server-core:1.44.0",
+      "filename": "mongo-java-server-core-1.44.0.jar",
+      "sha256": "03343e9afbde52df174e81d92dbd718e794f810a802624f6ff08ae56564a49bf",
+      "bytes": 448119
+    },
+    {
+      "coordinate": "de.bwaldvogel:mongo-java-server-h2-backend:1.44.0",
+      "filename": "mongo-java-server-h2-backend-1.44.0.jar",
+      "sha256": "039906a1b7497c092df0b259ed6de5d95fee83c2b60b35c8c6cd5f315a7b223c",
+      "bytes": 12763
+    },
+    {
+      "coordinate": "de.bwaldvogel:mongo-java-server-memory-backend:1.44.0",
+      "filename": "mongo-java-server-memory-backend-1.44.0.jar",
+      "sha256": "7ddb2c96aac74c3049e2b59035d18da6740577d4d403be1f68b39f4bcdb0f2d4",
+      "bytes": 11603
+    },
+    {
+      "coordinate": "de.bwaldvogel:mongo-java-server:1.44.0",
+      "filename": "mongo-java-server-1.44.0.jar",
+      "sha256": "07028fd087765303fb01c148528dc75f039c1151774a2484f94d7cbc6d34237a",
+      "bytes": 307
+    },
+    {
+      "coordinate": "dev.morphia.morphia:morphia-core:2.3.9",
+      "filename": "morphia-core-2.3.9.jar",
+      "sha256": "646daf46f7627d37166aa3f486ef0c0a31dd2eba31e0228b3aba95f70e5e48a5",
+      "bytes": 821909
+    },
+    {
+      "coordinate": "io.github.classgraph:classgraph:4.8.164",
+      "filename": "classgraph-4.8.164.jar",
+      "sha256": "e9b3487172ae0267fa820b657efce068f8be0fc04048ae3338ea7d968602eae3",
+      "bytes": 561968
+    },
+    {
+      "coordinate": "io.javalin:javalin:6.7.0",
+      "filename": "javalin-6.7.0.jar",
+      "sha256": "fffe9231d909eed9fbd7cb9a68f0eb5744b482b3ec60e7acf982c465852f6dd6",
+      "bytes": 794604
+    },
+    {
+      "coordinate": "io.netty:netty-buffer:4.1.132.Final",
+      "filename": "netty-buffer-4.1.132.Final.jar",
+      "sha256": "583c16c0b1e7692eb6cf2ac05bedb5fd8244998306899576d3fb585f4e41d547",
+      "bytes": 357931
+    },
+    {
+      "coordinate": "io.netty:netty-codec:4.1.132.Final",
+      "filename": "netty-codec-4.1.132.Final.jar",
+      "sha256": "10662499b0b6a6435de3a02979eed82b529ea9eaf7f1a54859ecc43705aa4096",
+      "bytes": 358386
+    },
+    {
+      "coordinate": "io.netty:netty-common:4.1.132.Final",
+      "filename": "netty-common-4.1.132.Final.jar",
+      "sha256": "97ca3b4e99fc605b6824498387102392f4c6ba9d5d3d93d507e2c9f38ab5bf10",
+      "bytes": 738436
+    },
+    {
+      "coordinate": "io.netty:netty-handler:4.1.132.Final",
+      "filename": "netty-handler-4.1.132.Final.jar",
+      "sha256": "6e19fe8c1a163857ef9eba9e255e133859d1b9da8fe3c7ee799381465e75cc92",
+      "bytes": 584484
+    },
+    {
+      "coordinate": "io.netty:netty-resolver:4.1.132.Final",
+      "filename": "netty-resolver-4.1.132.Final.jar",
+      "sha256": "1f0245b4541357aad24be113c870db0a08c75895eaa650338783397c245fa4c2",
+      "bytes": 37906
+    },
+    {
+      "coordinate": "io.netty:netty-transport-classes-epoll:4.1.132.Final",
+      "filename": "netty-transport-classes-epoll-4.1.132.Final.jar",
+      "sha256": "fbadf92d6c00f5d6d8e8835ae5256260e376c0f021c0d4656ad680e26cdb2e35",
+      "bytes": 147776
+    },
+    {
+      "coordinate": "io.netty:netty-transport-classes-kqueue:4.1.132.Final",
+      "filename": "netty-transport-classes-kqueue-4.1.132.Final.jar",
+      "sha256": "0fe403144fc5412f78fc852c688378e3572538727a816b9c03d4df762712a366",
+      "bytes": 112706
+    },
+    {
+      "coordinate": "io.netty:netty-transport-native-epoll:4.1.132.Final",
+      "filename": "netty-transport-native-epoll-4.1.132.Final.jar",
+      "sha256": "74afb6d8f8b62662bee7cfd574c5a742358895fd732b3011c557b100eaef7ed5",
+      "bytes": 6406
+    },
+    {
+      "coordinate": "io.netty:netty-transport-native-kqueue:4.1.132.Final",
+      "filename": "netty-transport-native-kqueue-4.1.132.Final.jar",
+      "sha256": "a5aae87cef91e1ffd15cdf204fc2c5ee8d7f3cdd172c42c098affeb07dff5da3",
+      "bytes": 6100
+    },
+    {
+      "coordinate": "io.netty:netty-transport-native-unix-common:4.1.132.Final",
+      "filename": "netty-transport-native-unix-common-4.1.132.Final.jar",
+      "sha256": "542d554e9bb57b57282cb42db7e05d2128d402d32584e5600daa2aef9d1980d1",
+      "bytes": 44326
+    },
+    {
+      "coordinate": "io.netty:netty-transport:4.1.132.Final",
+      "filename": "netty-transport-4.1.132.Final.jar",
+      "sha256": "70da7db7fba9bfcbed030747ca25e9a6a3a53694c3c69b353c4851e9db08f60a",
+      "bytes": 521725
+    },
+    {
+      "coordinate": "it.unimi.dsi:fastutil-core:8.5.18",
+      "filename": "fastutil-core-8.5.18.jar",
+      "sha256": "edae1dc6de09e46ab7646616125cc0575a6810f17ed6298bfc6e8dc85f9c4258",
+      "bytes": 6644023
+    },
+    {
+      "coordinate": "net.bytebuddy:byte-buddy:1.14.9",
+      "filename": "byte-buddy-1.14.9.jar",
+      "sha256": "377352e253282bf86f731ac90ed88348e8f40a63ce033c00a85982de7e790e6f",
+      "bytes": 4210756
+    },
+    {
+      "coordinate": "org.eclipse.jetty.toolchain:jetty-jakarta-servlet-api:5.0.2",
+      "filename": "jetty-jakarta-servlet-api-5.0.2.jar",
+      "sha256": "efb20997729f32bfa6c8a8319037c353f7ad460d5d49f336bf232998ea2358db",
+      "bytes": 605086
+    },
+    {
+      "coordinate": "org.eclipse.jetty.websocket:websocket-core-common:11.0.25",
+      "filename": "websocket-core-common-11.0.25.jar",
+      "sha256": "7c2ae37b08bf9b734c0805aaa135897cfacbb4930755b094247d03620d3b9010",
+      "bytes": 195458
+    },
+    {
+      "coordinate": "org.eclipse.jetty.websocket:websocket-core-server:11.0.25",
+      "filename": "websocket-core-server-11.0.25.jar",
+      "sha256": "411dfe5f345301ba3597a6dfc5c5c2fb1b0f4d37f347c915e77323ff1625039b",
+      "bytes": 64822
+    },
+    {
+      "coordinate": "org.eclipse.jetty.websocket:websocket-jetty-api:11.0.25",
+      "filename": "websocket-jetty-api-11.0.25.jar",
+      "sha256": "11524d9fa9012e4e8499bd65944fe05fb44e366a9fca7643b63efa75550b8796",
+      "bytes": 41273
+    },
+    {
+      "coordinate": "org.eclipse.jetty.websocket:websocket-jetty-common:11.0.25",
+      "filename": "websocket-jetty-common-11.0.25.jar",
+      "sha256": "960d446bbbf71c7b56c6ca69e85cbff834ae11a3d7158b8594ed8e7efc936fe6",
+      "bytes": 44130
+    },
+    {
+      "coordinate": "org.eclipse.jetty.websocket:websocket-jetty-server:11.0.25",
+      "filename": "websocket-jetty-server-11.0.25.jar",
+      "sha256": "4ac5eae9f626541d5fb0732173f7628dda9202081222f7ad2094cb7d4bddf620",
+      "bytes": 37500
+    },
+    {
+      "coordinate": "org.eclipse.jetty.websocket:websocket-servlet:11.0.25",
+      "filename": "websocket-servlet-11.0.25.jar",
+      "sha256": "932fa73a4e4de8dbfcf81357ebdd4c665d3c649cc9769125c1f1589d3c8d72cc",
+      "bytes": 17673
+    },
+    {
+      "coordinate": "org.eclipse.jetty:jetty-http:11.0.25",
+      "filename": "jetty-http-11.0.25.jar",
+      "sha256": "7ae3f8055557e6cea13980eaa37eaf9d546cd57a2d358aa7cb2e5de7c4946169",
+      "bytes": 273637
+    },
+    {
+      "coordinate": "org.eclipse.jetty:jetty-io:11.0.25",
+      "filename": "jetty-io-11.0.25.jar",
+      "sha256": "6d5859f4ce88156c86aac0fa62d27a768d8f100aa6da5c13a82ec3c9ea16a349",
+      "bytes": 222274
+    },
+    {
+      "coordinate": "org.eclipse.jetty:jetty-security:11.0.25",
+      "filename": "jetty-security-11.0.25.jar",
+      "sha256": "861a0be80a4dfa7935a89113d4ac4ed76505f079b22c9e2f1a84017908bbcd57",
+      "bytes": 121716
+    },
+    {
+      "coordinate": "org.eclipse.jetty:jetty-server:11.0.25",
+      "filename": "jetty-server-11.0.25.jar",
+      "sha256": "710652a7dccc0590cd0af2798dd3c4c93a777e7fb591d89d7cf02a4839bf0dd8",
+      "bytes": 800034
+    },
+    {
+      "coordinate": "org.eclipse.jetty:jetty-servlet:11.0.25",
+      "filename": "jetty-servlet-11.0.25.jar",
+      "sha256": "641eb7725c8aa27ff4f35e71b826f6c3fff5ce745d6997e520eafb887e3623ec",
+      "bytes": 165626
+    },
+    {
+      "coordinate": "org.eclipse.jetty:jetty-util:11.0.25",
+      "filename": "jetty-util-11.0.25.jar",
+      "sha256": "801ce0baaaf9a269fade7172dadd290c707f3bcdaf22b4292c323f6548b05959",
+      "bytes": 571524
+    },
+    {
+      "coordinate": "org.eclipse.jetty:jetty-webapp:11.0.25",
+      "filename": "jetty-webapp-11.0.25.jar",
+      "sha256": "1982c6fb76403fc2a808a6ae14a56b9e1c59ffcf5333f46b8cb7b0c664eb35b3",
+      "bytes": 158968
+    },
+    {
+      "coordinate": "org.eclipse.jetty:jetty-xml:11.0.25",
+      "filename": "jetty-xml-11.0.25.jar",
+      "sha256": "5d57ca091a0c58fc6b1fbe10f86e76bd14f854e1ac666f67422b30ae291f9fed",
+      "bytes": 73910
+    },
+    {
+      "coordinate": "org.fusesource.jansi:jansi:2.4.2",
+      "filename": "jansi-2.4.2.jar",
+      "sha256": "0b7b8b003a90ea491579b62f5118828e45112914c65589b00faa49d6ec785839",
+      "bytes": 256537
+    },
+    {
+      "coordinate": "org.javassist:javassist:3.28.0-GA",
+      "filename": "javassist-3.28.0-GA.jar",
+      "sha256": "57d0a9e9286f82f4eaa851125186997f811befce0e2060ff0a15a77f5a9dd9a7",
+      "bytes": 851531
+    },
+    {
+      "coordinate": "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.25",
+      "filename": "kotlin-stdlib-jdk7-1.9.25.jar",
+      "sha256": "fb5373dd761b4e93e3f538c5e853bba38a71143a181536e8f193ed6e4eddb3b8",
+      "bytes": 961
+    },
+    {
+      "coordinate": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.25",
+      "filename": "kotlin-stdlib-jdk8-1.9.25.jar",
+      "sha256": "f94fdf78390ce9be30383bf039c5a935caea33b11f037fc7f86bbcee19287e5a",
+      "bytes": 967
+    },
+    {
+      "coordinate": "org.jetbrains.kotlin:kotlin-stdlib:1.9.25",
+      "filename": "kotlin-stdlib-1.9.25.jar",
+      "sha256": "f9cdcdbff1f5de85380ae526977e683726c2aa42db1ed6e6e50ae89e496e95fd",
+      "bytes": 1718956
+    },
+    {
+      "coordinate": "org.jetbrains:annotations:24.0.1",
+      "filename": "annotations-24.0.1.jar",
+      "sha256": "61666dbce7e42e6c85b43c04fcfb8293a21dcb55b3c80e869270ce42c01a6b35",
+      "bytes": 30651
+    },
+    {
+      "coordinate": "org.jline:jline-native:3.30.9",
+      "filename": "jline-native-3.30.9.jar",
+      "sha256": "50de870a16d32974bacfa6c93c28d6888dd4f90b9b896b13da51fb64669c93cb",
+      "bytes": 190178
+    },
+    {
+      "coordinate": "org.jline:jline-terminal-jansi:3.30.9",
+      "filename": "jline-terminal-jansi-3.30.9.jar",
+      "sha256": "183fd7e9767ecf6382788b04f4441607638275004e66c97e7cc3d721ea7fd027",
+      "bytes": 50759
+    },
+    {
+      "coordinate": "org.jline:jline-terminal:3.30.9",
+      "filename": "jline-terminal-3.30.9.jar",
+      "sha256": "9096c3976aaaefbd01137be2c13e8fc188798df73ead898c2634798a473e87c6",
+      "bytes": 288502
+    },
+    {
+      "coordinate": "org.jline:jline:3.30.9",
+      "filename": "jline-3.30.9.jar",
+      "sha256": "b54aebaaf390dfd7fa82d45b7e168337bacb3d6d1174709517a2ecd789f39e38",
+      "bytes": 1522818
+    },
+    {
+      "coordinate": "org.mongodb:bson-record-codec:4.10.2",
+      "filename": "bson-record-codec-4.10.2.jar",
+      "sha256": "387ce2283a802dbd996ff8128a27fcaf5079be30c9aaef58412d13ccabdfab99",
+      "bytes": 13354
+    },
+    {
+      "coordinate": "org.mongodb:bson:4.10.2",
+      "filename": "bson-4.10.2.jar",
+      "sha256": "65dcbb2a9cfdeff0a5dfac27828fc555643460cf747d07655f233a9633d5401c",
+      "bytes": 511231
+    },
+    {
+      "coordinate": "org.mongodb:mongodb-driver-core:4.10.2",
+      "filename": "mongodb-driver-core-4.10.2.jar",
+      "sha256": "8fbde9b9079a76fd8342e9771c2d846b2480e2eb1308870f9870455a5ce5c360",
+      "bytes": 1601966
+    },
+    {
+      "coordinate": "org.mongodb:mongodb-driver-legacy:4.10.2",
+      "filename": "mongodb-driver-legacy-4.10.2.jar",
+      "sha256": "67c9e0f06cda19b0c07d994011a4bb55eabac2c62fbb4f02a629fec7b9c0ae3d",
+      "bytes": 150175
+    },
+    {
+      "coordinate": "org.mongodb:mongodb-driver-sync:4.10.2",
+      "filename": "mongodb-driver-sync-4.10.2.jar",
+      "sha256": "6bd06fac67deac0fab556d77bebef8b4a5d1be2cdce3c1d425cc4f5c2fb936ab",
+      "bytes": 146643
+    },
+    {
+      "coordinate": "org.reflections:reflections:0.10.2",
+      "filename": "reflections-0.10.2.jar",
+      "sha256": "938a2d08fe54050d7610b944d8ddc3a09355710d9e6be0aac838dbc04e9a2825",
+      "bytes": 130398
+    },
+    {
+      "coordinate": "org.slf4j:slf4j-api:2.0.17",
+      "filename": "slf4j-api-2.0.17.jar",
+      "sha256": "7b751d952061954d5abfed7181c1f645d336091b679891591d63329c622eb832",
+      "bytes": 69908
+    },
+    {
+      "coordinate": "us.hebi.quickbuf:quickbuf-runtime:1.4",
+      "filename": "quickbuf-runtime-1.4.jar",
+      "sha256": "ad4919676436a1f1d992d2310cf5f6b06741468bc82ce9b3538f141051af44f1",
+      "bytes": 174978
+    }
+  ],
+  "local_jars": [
+    {
+      "file": "lib/kcp.jar",
+      "sha256": "cc327214d46eeae262249eef7db51ef95b6beecd03292369cc4fb6c47ad8aafa",
+      "bytes": 590105
+    }
+  ],
+  "provenance_gaps": [
+    "kcp.jar 没有足够信息绑定可重建的上游源码提交。",
+    "旧生成 Java 存在，但检出未包含可复建它们的原始 .proto；本轮 generateProto 为 NO-SOURCE。",
+    "wrapper 配置未声明 distributionSha256Sum；本轮未扩大范围修改构建供应链配置。"
+  ],
+  "native_linux": "未验证，没有确认可用且已授权的原生 Linux 运行环境。",
+  "original_checkout_build_gradle_sha256": "057cdbab6fcb8dd16cc7eea25b2d4f22e8e32a06e325262cd05a4786bca21d12",
+  "baseline_eol_boundary": "build_gradle_baseline_sha256 对应隔离 Git 检出的 LF 文件；original_checkout 对应主检出的 CRLF 实际字节。源码提交与规范化内容相同。"
+}

@@ -216,3 +216,21 @@ task updateProto {
 processResources {
     dependsOn 'generateProto'
 }
+
+// 只验证旧版离线协议基线，不启动客户端、服务监听或数据库。
+tasks.register('s0BaselineTest', JavaExec) {
+    group = 'verification'
+    description = '验证 S0 的旧版协议黄金样本、封包及错误输入'
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass.set('emu.lunarcore.S0BaselineRegression')
+    systemProperty 'stdout.encoding', 'UTF-8'
+    systemProperty 'stderr.encoding', 'UTF-8'
+    if (providers.gradleProperty('s0NegativeControl').orNull == 'true') {
+        args '--negative-control'
+    }
+}
+
+tasks.named('check') {
+    dependsOn tasks.named('s0BaselineTest')
+}
