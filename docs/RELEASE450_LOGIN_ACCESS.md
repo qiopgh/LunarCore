@@ -51,3 +51,35 @@
 保留首次失败：本地`close()`发出的20字节控制包经过MITM，但5秒内远端会话没有注销。后续按原配置的30秒超时等待，实测约30秒后原服务端进入INACTIVE并注销玩家。这里验证的是有界超时清理，不宣称控制包能立即断开；没有修改传输库来制造通过。真实客户端窗口结束还需验证自身关闭与采集退出，不能由本预检替代。
 
 用户离开电脑后的真实窗口操作复用项目现有管理员Python控制器，仅补目标窗口截图动作。每次先核对新鲜截图与身份，再执行必要点击；不另搭桌面自动化框架，不推进剧情或战斗。正常RunAs提升已通过无副作用探针，但真实游戏截图与点击仍待客户端接入准备完成后验证。
+
+
+## Echium最小候选与首次真实窗口（2026-09-20）
+
+本节补充上述历史边界，不把HTTP成功写成登录成功。固定正式构建与既有LunarCore生产JAR不变；只对固定Echium副本应用`tools/echium-login/echium-login.patch`，不替换主线、不新增启动器或密码学框架。
+
+### 必要差异和复现
+
+- `cfg.patch_rsa=false`、`cfg.patch_censorship=false`、`cfg.sdk_url=http://127.0.0.1:21001`：配置缺失、损坏或缺字段时，继续关闭两项无关修改并经过MITM。
+- `patched_apn_alloc`的HTTPS域名分支增加`.hoyoverse.com`，与正式海外客户端SDK入口匹配；保留原字符串分配、路径和查询参数处理。
+- `sources.json`固定两个上游提交和Odin便携包摘要。原`deps.ps1`与`build.ps1`实跑通过；未修改全局PATH。原生Linux未验证。
+
+复现使用一次性目录：把两个测试目录与补丁复制过去，再将固定提交的Echium源码副本放在同级`echium`目录。先在该副本运行上游`deps.ps1`，用`git apply --unidiff-zero`应用固定版本的零上下文补丁后运行原`build.ps1`；不要把第三方源码、编译器或游戏文件纳入仓库。以下命令在该一次性目录执行，Odin仅加入当前进程PATH：
+
+```powershell
+odin build ./config-check -vet -strict-style -o:speed -out:config-check.exe
+odin build ./apn-check -vet -strict-style -o:speed -out:apn-check.exe
+./config-check.exe
+./apn-check.exe
+```
+
+当前目录没有`Echium.json`时，两项候选测试都退出0。配置测试直接调用原`cfg.load`；缺失、非法JSON、只有`log_level`三种输入的基线/修改/独立恢复源码并重新编译结果均为2/0/2，显式完整配置为0/0/0。APN测试直接调用原`patched_apn_alloc`并仅替换其接收回调；国内域、海外域、非目标域三个合成URL的整组结果为2/0/2。测试不会启动游戏或联网，不模拟配置解码或另写封包。
+
+### 实际观察与失败保留
+
+一次受控窗口中，Echium报告地址、Unity URL和APN共三个接入点安装成功；MITM记录23条HTTP响应，其中2条是启动前合成预检、21条来自真实客户端。客户端访问了dispatch、SDK配置与combo登录路径，但未观察到客户端gateway、UDP/KCP或登录完成响应。HTTP 200不代表SDK业务返回码为0，本轮未读取请求正文、认证头或官方凭据。
+
+管理员Python已真实尝试截图，但因`FOREGROUND_NOT_TARGET`拒绝；随后原窗口调整与游戏关闭均遇到`INTERACTIVE_DESKTOP_UNAVAILABLE`。没有成功截图或发送点击，不绕过桌面限制。关闭游戏后的无输入提升检查仍返回同一错误；当前只能确认交互桌面不可访问，不能仅凭错误断定是锁屏、会话切换或其他具体原因。
+
+原采样器三项观察点已卸载、session已detach、RPC线程已停止；其原退出码5和`TARGET_WINDOW_UNRESPONSIVE:before_stop`保留。正常关闭未完成，随后用原精确身份清理脚本核对本轮PID、创建时间和路径后终止，实测退出0、游戏进程归零。临时新增DLL/配置已按摘要撤回，MITM退出0，服务端经原stop退出1000，端口释放；系统代理、代理环境及信任证书快照一致。
+
+下一步仅在交互桌面恢复可用后，复用上述产物和MITM窗口，以简短管理员Python截图确认界面，再执行必要的本地合成账号登录动作。当前Goal仍仅登录且未完成，不重复全量回归，不推进剧情或战斗。

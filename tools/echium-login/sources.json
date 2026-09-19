@@ -1,0 +1,50 @@
+{
+  "target_client": "20260813-0422-V4.5Live-16121062-OSPRODWin4.5.0-OSLive",
+  "echium": {
+    "url": "https://github.com/yuvlian/echium",
+    "commit": "b92b336e5a14ed7f55c9ebe657c6a72ca3ce4ac9",
+    "license": "MIT"
+  },
+  "il2cure": {
+    "url": "https://github.com/yuvlian/il2cure",
+    "commit": "e9c2da92e53ab64fdfa036726f9684c1e8d8ab9c"
+  },
+  "odin": {
+    "url": "https://github.com/odin-lang/Odin/releases/tag/dev-2026-09",
+    "version": "dev-2026-09-nightly:a2fb372",
+    "archive": "odin-windows-amd64-dev-2026-09.zip",
+    "sha256": "8ed8abd95b82e0af1eb7e86cb75f380fd8bde104947721817b35929f5fc19388",
+    "license_url": "https://github.com/odin-lang/Odin/blob/dev-2026-09/LICENSE"
+  },
+  "build_command": [
+    "odin",
+    "build",
+    ".",
+    "-vet",
+    "-strict-style",
+    "-o:speed",
+    "-build-mode:dll"
+  ],
+  "modified_source_sha256": {
+    "cfg/cfg.odin": "5694057e9a79cc4011d159cc4c2d9445ab58bf46ed3e06c9ad163f102cc0b975",
+    "patches/apn.odin": "a2063f72b5c59dc3f965342dddfcf8a340f1d819802fd3b2b6dc2063d1ffd0c1"
+  },
+  "observed": {
+    "config_fallback_three_state": [
+      2,
+      0,
+      2
+    ],
+    "apn_redirect_three_state": [
+      2,
+      0,
+      2
+    ],
+    "real_http_responses": 21,
+    "real_gateway_requests": 0,
+    "real_udp_events": 0,
+    "game_screenshot_verified": false,
+    "game_click_verified": false,
+    "real_local_login_verified": false
+  }
+}

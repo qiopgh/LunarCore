@@ -1,0 +1,14 @@
+--- a/cfg/cfg.odin
++++ b/cfg/cfg.odin
+@@ -31,3 +31,3 @@
+-	patch_rsa                 = true,
+-	patch_censorship          = true,
+-	sdk_url                   = "http://127.0.0.1:21000",
++	patch_rsa                 = false,
++	patch_censorship          = false,
++	sdk_url                   = "http://127.0.0.1:21001",
+--- a/patches/apn.odin
++++ b/patches/apn.odin
+@@ -51 +51 @@
+-			strings.contains(s, ".mihoyo.com") {
++			(strings.contains(s, ".mihoyo.com") || strings.contains(s, ".hoyoverse.com")) {
