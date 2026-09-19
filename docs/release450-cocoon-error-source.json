@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "target_client_build": "20260813-0422-V4.5Live-16121062-OSPRODWin4.5.0-OSLive",
+  "mainline_baseline": "2d338af76002bace4118356d50c63e6f83e1b238",
+  "message": "StartCocoonStageScRsp",
+  "wire_cmdid": 1479,
+  "projection": "StartCocoonStageScRspError",
+  "branch": "battle == null",
+  "fields": [
+    {
+      "name": "retcode",
+      "number": 13,
+      "type": "uint32",
+      "wire_type": 0,
+      "tested_value": 1
+    }
+  ],
+  "reference": {
+    "url": "https://git.xeondev.com/HonkaiSlopRail/himeko-nova-sr",
+    "branch": "master",
+    "commit": "3b304b5a1b1cc0d478e285c3dcb0d4a555ed0910",
+    "source": "protocol/src/protocol.pb.zig",
+    "source_sha256": "87f92065b507d339d6f202da59c8b10af111ce64dd4d139c8f5dbfcd1dae4cb2",
+    "declared_client": "4.5 beta",
+    "license": "上游未明确；仅按项目约定作为协议研究参考，不声称获得额外授权。"
+  },
+  "client_evidence": {
+    "gameassembly_sha256": "0f960e7f593ca99a20c38957a59c57ae5efc47943f9a0e87b773998077723839",
+    "runtime_type_binding": "StartCocoonStageScRsp -> 1479",
+    "static_field_candidate": "retcode_，偏移 32，tag 0x68",
+    "evidence_level": "运行时消息类型/编号绑定，字段号为与参考相符的静态候选；未进行真实客户端 wire 验收。"
+  },
+  "generation": {
+    "protoc": "3.24.3",
+    "quickbuf_generator": "1.3.1",
+    "quickbuf_runtime": "1.4",
+    "schema": "src/release450/proto/start_cocoon_stage_error.proto",
+    "schema_sha256": "627b957be5e5b13cfdbe408280c6e6f327f77be6a4bb326a83ee048796637f53",
+    "task": "generateRelease450Proto",
+    "command": [
+      "gradlew",
+      "--offline",
+      "--no-daemon",
+      "--console=plain",
+      "generateRelease450Proto"
+    ],
+    "generated_source": "src/generated/release450/emu/lunarcore/proto/v450/StartCocoonStageErrorOuterClass.java",
+    "generated_sha256": "2d8749822c90a341316a8d744f6e561db644f19d1f2bbd180383e45521ed4f36",
+    "ascii_space_path_reproduced": true,
+    "unicode_path_status": "failed_with_pinned_windows_generator",
+    "generator_sha256": {
+      "protoc-3.24.3-windows-x86_64.exe": "3ec4be338de188855dba7a3433aabb0710b7057c5b0ab98ef478644eb179468a",
+      "protoc-gen-quickbuf-1.3.1-windows-x86_64.exe": "71482c5163a7b6ec96d748d6d3c3ad712e7d2610645ba2eea4cb21bc11566e07"
+    }
+  },
+  "scope": {
+    "error_branch_only": true,
+    "success_battle_body_adapted": false,
+    "official_client_verified": false,
+    "step_3": "等待用户配合，未启动客户端或服务。"
+  }
+}

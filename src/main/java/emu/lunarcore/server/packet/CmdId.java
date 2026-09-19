@@ -2256,7 +2256,8 @@ public class CmdId {
     public static final int SavePointsInfoNotify = -1;
     public static final int EntityBindPropCsReq = -1;
     public static final int GroupStateChangeCsReq = -1;
-    public static final int StartCocoonStageScRsp = -1;
+    // 仅补齐固定正式构建已观察的消息编号；正文仍待独立适配与客户端验证。
+    public static final int StartCocoonStageScRsp = 1479;
     public static final int GetUnlockTeleportCsReq = -1;
     public static final int ChangePropTimelineInfoCsReq = -1;
     public static final int DeleteSummonUnitCsReq = -1;

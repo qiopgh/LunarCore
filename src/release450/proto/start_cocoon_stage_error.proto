@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package lunarcore.release450;
+
+option java_package = "emu.lunarcore.proto.v450";
+option java_outer_classname = "StartCocoonStageErrorOuterClass";
+
+// 仅投影 StartCocoonStageScRsp 的错误响应，不声明完整战斗正文已恢复。
+// 来源：Himeko 3b304b5a1b1cc0d478e285c3dcb0d4a555ed0910 的同名描述表，
+// 与固定正式构建已保存的 retcode_ 偏移 32、写入 tag 0x68 静态候选相符。
+// 其余字段及嵌套 BattleInfo 不在本投影内，不用旧版结构补齐未知内容。
+message StartCocoonStageScRspError {
+  uint32 retcode = 13;
+}

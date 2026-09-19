@@ -30,8 +30,8 @@ version = '2.0.0'
 
 var shouldGenerateProto = System.getenv("GENERATE_PROTO") == "true"
 System.out.println(shouldGenerateProto ?
-        "Generating proto files" :
-        "Skipping proto generation")
+        "启用旧版生成目录清理；版本化消息按各自任务生成" :
+        "保留旧版生成源码；版本化消息按各自任务生成")
 
 repositories {
     mavenCentral()
@@ -59,6 +59,13 @@ protobuf {
                     //option 'store_unknown_fields=true'
                     outputSubDir = ''
                 }
+            }
+        }
+
+        // 版本化小消息单独生成，避免触碰已跟踪的旧版协议源码。
+        ofSourceSet('release450').each { task ->
+            task.doFirst {
+                logger.lifecycle('仅生成 release450 消息，旧版 main 协议源码保持不变。')
             }
         }
     }
@@ -147,6 +154,8 @@ jar {
 }
 
 sourceSets {
+    // 插件自动使用 src/release450/proto，不重复登记同一路径。
+    release450 {}
     main {
         proto {
             srcDir 'src/generated'
@@ -154,7 +163,22 @@ sourceSets {
         java {
             srcDir 'src/main/java'
         }
+        compileClasspath += sourceSets.release450.output
+        runtimeClasspath += sourceSets.release450.output
     }
+    test {
+        compileClasspath += sourceSets.release450.output
+        runtimeClasspath += sourceSets.release450.output
+    }
+}
+
+// 沿用现有依赖版本，不另建运行库或生成器工具链。
+configurations.release450Implementation.extendsFrom configurations.implementation
+tasks.named('compileRelease450Java') {
+    options.encoding = 'UTF-8'
+}
+tasks.named('jar') {
+    from sourceSets.release450.output
 }
 
 idea {
@@ -233,4 +257,22 @@ tasks.register('s0BaselineTest', JavaExec) {
 
 tasks.named('check') {
     dependsOn tasks.named('s0BaselineTest')
+}
+
+// 只验证错误响应的字段投影和既有封包，不启动客户端、网络或数据库。
+tasks.register('release450CocoonErrorTest', JavaExec) {
+    group = 'verification'
+    description = '验证正式构建候选的茧错误响应字段与原封包'
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass.set('emu.lunarcore.Release450CocoonErrorRegression')
+    systemProperty 'stdout.encoding', 'UTF-8'
+    systemProperty 'stderr.encoding', 'UTF-8'
+    if (providers.gradleProperty('release450NegativeControl').orNull == 'true') {
+        args '--negative-control'
+    }
+}
+
+tasks.named('check') {
+    dependsOn tasks.named('release450CocoonErrorTest')
 }
