@@ -318,5 +318,13 @@ tasks.register('candidate450ResourceSmoke', JavaExec) {
             throw new GradleException('candidate450LoginOnly 只接受 true 或 false')
         }
         if (loginOnly == 'true') args '--login-only'
+        def mitm = providers.gradleProperty('candidate450Mitm').orNull
+        if (mitm != null && mitm != 'true' && mitm != 'false') {
+            throw new GradleException('candidate450Mitm 只接受 true 或 false')
+        }
+        if (mitm == 'true') {
+            if (loginOnly != 'true') throw new GradleException('MITM模式仅允许与candidate450LoginOnly=true一起使用')
+            args '--mitm'
+        }
     }
 }
