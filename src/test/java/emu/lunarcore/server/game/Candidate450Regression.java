@@ -44,6 +44,7 @@ public final class Candidate450Regression {
             testOriginalFrameIngress(logs);
             testStateConditions();
             testCandidateSequence(logs);
+            passed += LoginFinishInitializationRegression.verify();
             testProjections();
             if (Arrays.asList(args).contains("--negative-control")) require(false, "故意失败的负面控制");
             System.out.println("CANDIDATE450_TESTS_PASSED=" + passed);
