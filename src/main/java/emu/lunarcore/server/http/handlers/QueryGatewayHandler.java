@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import emu.lunarcore.LunarCore;
 import emu.lunarcore.proto.GateserverOuterClass.Gateserver;
 import emu.lunarcore.util.Utils;
+import emu.lunarcore.server.game.Release450Candidate;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 
@@ -76,7 +77,10 @@ public class QueryGatewayHandler implements Handler {
         }
 
         // Encode to base64 and send to client
-        ctx.result(Utils.base64Encode(gateserver.toByteArray()));
+        byte[] encoded = LunarCore.getConfig().getCandidate450().enabled
+                ? Release450Candidate.translate("GateServer", gateserver).toByteArray()
+                : gateserver.toByteArray();
+        ctx.result(Utils.base64Encode(encoded));
     }
 
 }

@@ -14,9 +14,15 @@ public class GameServerPacketHandler {
     private final Int2ObjectMap<PacketHandler> handlers;
 
     public GameServerPacketHandler() {
-        this.handlers = new Int2ObjectOpenHashMap<>();
+        this(true);
+    }
 
-        this.registerHandlers();
+    // 正常入口仍扫描原 handler；离线回归可只登记合成业务处理器。
+    GameServerPacketHandler(boolean register) {
+        this.handlers = new Int2ObjectOpenHashMap<>();
+        if (register) {
+            this.registerHandlers();
+        }
     }
 
     public void registerPacketHandler(Class<? extends PacketHandler> handlerClass) {
@@ -45,37 +51,51 @@ public class GameServerPacketHandler {
     }
 
     public void handle(GameSession session, int cmdId, byte[] data) {
+        if (session.getCandidate450() != null) {
+            try {
+                session.getCandidate450().receive(cmdId, data, (legacyId, legacyBody) -> handleLegacy(session, legacyId, legacyBody));
+            } catch (Exception error) {
+                session.diagnose("RECV", "CANDIDATE_DECODE_FAILED", cmdId, data.length, error.getClass().getSimpleName());
+            }
+            return;
+        }
+        handleLegacy(session, cmdId, data);
+    }
+
+    void handleLegacy(GameSession session, int cmdId, byte[] data) {
         PacketHandler handler = this.handlers.get(cmdId);
 
-        if (handler != null) {
-            try {
-                // Make sure session is ready for packets
-                SessionState state = session.getState();
-
-                if (cmdId == CmdId.PlayerHeartBeatCsReq) {
-                    // Always continue if packet is ping request
-                } else if (cmdId == CmdId.PlayerGetTokenCsReq) {
-                    if (state != SessionState.WAITING_FOR_TOKEN) {
-                        return;
-                    }
-                } else if (cmdId == CmdId.PlayerLoginCsReq) {
-                    if (state != SessionState.WAITING_FOR_LOGIN) {
-                        return;
-                    }
-                } else {
-                    if (state != SessionState.ACTIVE) {
-                        return;
-                    }
-                }
-                
-                // Handle packet
-                handler.handle(session, data);
-            } catch (Exception ex) {
+        if (handler == null) {
+            session.diagnose("RECV", "NO_HANDLER", cmdId, data.length, "UNMAPPED");
+            return;
+        }
+        String rejection = rejectionReason(session.getState(), cmdId);
+        if (rejection != null) {
+            session.diagnose("RECV", "STATE_REJECTED", cmdId, data.length, rejection);
+            return;
+        }
+        try {
+            session.diagnose("RECV", "HANDLER_ENTER", cmdId, data.length, handler.getClass().getSimpleName());
+            handler.handle(session, data);
+            session.diagnose("RECV", "HANDLER_OK", cmdId, data.length, handler.getClass().getSimpleName());
+        } catch (Exception ex) {
+            // 诊断模式只输出异常类型，避免异常消息带出账号或正文。
+            session.diagnose("RECV", "HANDLER_EXCEPTION", cmdId, data.length, ex.getClass().getSimpleName());
+            if (!session.isSessionDiagnosticsEnabled()) {
                 ex.printStackTrace();
             }
         }
+    }
 
-        // Log unhandled packets
-        //LunarCore.getLogger().info("Unhandled packet (" + cmdId + "): " + CmdIdUtils.getCmdIdName(cmdId));
+    // 只提取既有状态条件，心跳、token、login 和普通请求的放行语义不变。
+    static String rejectionReason(SessionState state, int cmdId) {
+        if (cmdId == CmdId.PlayerHeartBeatCsReq) return null;
+        if (cmdId == CmdId.PlayerGetTokenCsReq) {
+            return state == SessionState.WAITING_FOR_TOKEN ? null : "EXPECTED_WAITING_FOR_TOKEN";
+        }
+        if (cmdId == CmdId.PlayerLoginCsReq) {
+            return state == SessionState.WAITING_FOR_LOGIN ? null : "EXPECTED_WAITING_FOR_LOGIN";
+        }
+        return state == SessionState.ACTIVE ? null : "EXPECTED_ACTIVE";
     }
 }

@@ -26,6 +26,7 @@ public class Config {
     public ServerRates serverRates = new ServerRates();
     public LogOptions logOptions = new LogOptions();
     public LoginOptions loginOptions = new LoginOptions();
+    public Candidate450Options candidate450 = new Candidate450Options();
 
     public String resourceDir = "./resources";
     public String dataDir = "./data";
@@ -201,6 +202,8 @@ public class Config {
         public boolean commands = true;
         public boolean connections = true;
         public boolean packets = false;
+        // 只记录编号、长度、状态和分类原因，不输出正文、账号或会话密钥。
+        public boolean sessionDiagnostics = false;
         public boolean filterLoopingPackets = false;
     }
     
@@ -209,10 +212,29 @@ public class Config {
         public String accountName = "player";
     }
 
+    @Getter
+    public static class Candidate450Options {
+        // 实验候选默认关闭；不是正式客户端认证或完整兼容实现。
+        public boolean enabled = false;
+        public String localAccountUid = "";
+    }
+
     public void validate() {
+        if (candidate450.enabled) {
+            if (!isLocal(gameServer.bindAddress) || !isLocal(gameServer.getPublicAddress())
+                    || !isLocal(httpServer.bindAddress) || !isLocal(httpServer.getPublicAddress())) {
+                throw new IllegalArgumentException("候选适配仅允许回环 HTTP/KCP 地址");
+            }
+            if (candidate450.localAccountUid == null || candidate450.localAccountUid.isBlank()) {
+                throw new IllegalArgumentException("候选适配必须配置隔离本地账号 UID");
+            }
+        }
         if (this.gameServer.kcpTimeout == null) {
             this.gameServer.kcpTimeout = 30;
         }
     }
 
+    private static boolean isLocal(String address) {
+        return "127.0.0.1".equals(address) || "::1".equals(address) || "localhost".equalsIgnoreCase(address);
+    }
 }

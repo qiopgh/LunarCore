@@ -1,0 +1,2960 @@
+{
+  "source": "https://git.xeondev.com/HonkaiSlopRail/himeko-nova-sr",
+  "reference_commit": "3b304b5a1b1cc0d478e285c3dcb0d4a555ed0910",
+  "reference_declared_client": "4.5 beta",
+  "source_sha256": "87f92065b507d339d6f202da59c8b10af111ce64dd4d139c8f5dbfcd1dae4cb2",
+  "cmd_source_sha256": "07be553952760d2e9d2b08b6cafde7b24d9a760bab517d111fcc7d29788f3d0c",
+  "target_client_build": "20260813-0422-V4.5Live-16121062-OSPRODWin4.5.0-OSLive",
+  "evidence_level": "REFERENCE_CANDIDATE_NOT_OFFICIAL_WIRE_ACCEPTANCE",
+  "roots": [
+    "Dispatch",
+    "GateServer",
+    "PlayerGetTokenCsReq",
+    "PlayerGetTokenScRsp",
+    "PlayerLoginCsReq",
+    "PlayerLoginScRsp",
+    "PlayerLoginFinishCsReq",
+    "PlayerLoginFinishScRsp",
+    "PlayerHeartBeatCsReq",
+    "PlayerHeartBeatScRsp",
+    "GetAvatarDataCsReq",
+    "GetAvatarDataScRsp",
+    "GetCurLineupDataCsReq",
+    "GetCurLineupDataScRsp",
+    "GetAllLineupDataCsReq",
+    "GetAllLineupDataScRsp",
+    "GetCurSceneInfoCsReq",
+    "GetCurSceneInfoScRsp",
+    "SceneEntityMoveCsReq",
+    "SceneEntityMoveScRsp",
+    "StartCocoonStageCsReq",
+    "StartCocoonStageScRsp",
+    "QuickStartCocoonStageCsReq",
+    "QuickStartCocoonStageScRsp",
+    "PVEBattleResultCsReq",
+    "PVEBattleResultScRsp",
+    "SyncLineupNotify",
+    "PlayerSyncScNotify",
+    "GetBasicInfoCsReq",
+    "GetBasicInfoScRsp",
+    "ContentPackageGetDataCsReq",
+    "ContentPackageGetDataScRsp",
+    "ContentPackageSyncDataScNotify",
+    "GetCurBattleInfoCsReq",
+    "GetCurBattleInfoScRsp"
+  ],
+  "messages": {
+    "RegionInfo": [
+      {
+        "name": "name",
+        "number": 1,
+        "type": "string",
+        "repeated": false,
+        "descriptor": ".String",
+        "oneof": null
+      },
+      {
+        "name": "title",
+        "number": 2,
+        "type": "string",
+        "repeated": false,
+        "descriptor": ".String",
+        "oneof": null
+      },
+      {
+        "name": "dispatch_url",
+        "number": 3,
+        "type": "string",
+        "repeated": false,
+        "descriptor": ".String",
+        "oneof": null
+      },
+      {
+        "name": "env_type",
+        "number": 4,
+        "type": "string",
+        "repeated": false,
+        "descriptor": ".String",
+        "oneof": null
+      },
+      {
+        "name": "display_name",
+        "number": 5,
+        "type": "string",
+        "repeated": false,
+        "descriptor": ".String",
+        "oneof": null
+      },
+      {
+        "name": "stop_desc",
+        "number": 6,
+        "type": "string",
+        "repeated": false,
+        "descriptor": ".String",
+        "oneof": null
+      }
+    ],
+    "Dispatch": [
+      {
+        "name": "retcode",
+        "number": 1,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "msg",
+        "number": 2,
+        "type": "string",
+        "repeated": false,
+        "descriptor": ".String",
+        "oneof": null
+      },
+      {
+        "name": "top_sever_region_name",
+        "number": 3,
+        "type": "string",
+        "repeated": false,
+        "descriptor": ".String",
+        "oneof": null
+      },
+      {
+        "name": "region_list",
+        "number": 4,
+        "type": "RegionInfo",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .SubMessage = {} } }",
+        "oneof": null
+      }
+    ],
+    "GateServer": [
+      {
+        "name": "region_name",
+        "number": 6,
+        "type": "string",
+        "repeated": false,
+        "descriptor": ".String",
+        "oneof": null
+      },
+      {
+        "name": "ex_resource_url",
+        "number": 13,
+        "type": "string",
+        "repeated": false,
+        "descriptor": ".String",
+        "oneof": null
+      },
+      {
+        "name": "ip",
+        "number": 9,
+        "type": "string",
+        "repeated": false,
+        "descriptor": ".String",
+        "oneof": null
+      },
+      {
+        "name": "lua_url",
+        "number": 2,
+        "type": "string",
+        "repeated": false,
+        "descriptor": ".String",
+        "oneof": null
+      },
+      {
+        "name": "use_tcp",
+        "number": 804,
+        "type": "bool",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "ifix_url",
+        "number": 907,
+        "type": "string",
+        "repeated": false,
+        "descriptor": ".String",
+        "oneof": null
+      },
+      {
+        "name": "asset_bundle_url",
+        "number": 7,
+        "type": "string",
+        "repeated": false,
+        "descriptor": ".String",
+        "oneof": null
+      },
+      {
+        "name": "port",
+        "number": 3,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "base_asset_bundle_version_update_url",
+        "number": 206,
+        "type": "string",
+        "repeated": false,
+        "descriptor": ".String",
+        "oneof": null
+      },
+      {
+        "name": "ifix_version",
+        "number": 1154,
+        "type": "string",
+        "repeated": false,
+        "descriptor": ".String",
+        "oneof": null
+      }
+    ],
+    "PlayerGetTokenCsReq": [
+      {
+        "name": "platform",
+        "number": 3,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "uid",
+        "number": 6,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "PlayerGetTokenScRsp": [
+      {
+        "name": "uid",
+        "number": 11,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "retcode",
+        "number": 13,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "PlayerLoginCsReq": [
+      {
+        "name": "platform",
+        "number": 4,
+        "type": "PlatformType",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "client_res_version",
+        "number": 3,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "login_random",
+        "number": 11,
+        "type": "uint64",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "PlayerBasicInfo": [
+      {
+        "name": "nickname",
+        "number": 1,
+        "type": "string",
+        "repeated": false,
+        "descriptor": ".String",
+        "oneof": null
+      },
+      {
+        "name": "level",
+        "number": 2,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "exp",
+        "number": 3,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "stamina",
+        "number": 4,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "mcoin",
+        "number": 5,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "hcoin",
+        "number": 6,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "scoin",
+        "number": 7,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "world_level",
+        "number": 8,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "PlayerLoginScRsp": [
+      {
+        "name": "basic_info",
+        "number": 11,
+        "type": "PlayerBasicInfo",
+        "repeated": false,
+        "descriptor": ".{ .SubMessage = {} }",
+        "oneof": null
+      },
+      {
+        "name": "server_timestamp_ms",
+        "number": 13,
+        "type": "uint64",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "cur_timezone",
+        "number": 1,
+        "type": "int32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "login_random",
+        "number": 9,
+        "type": "uint64",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "retcode",
+        "number": 8,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "stamina",
+        "number": 15,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "PlayerLoginFinishCsReq": [],
+    "PlayerLoginFinishScRsp": [
+      {
+        "name": "retcode",
+        "number": 13,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "PlayerHeartBeatCsReq": [
+      {
+        "name": "client_time_ms",
+        "number": 12,
+        "type": "uint64",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "PlayerHeartBeatScRsp": [
+      {
+        "name": "server_time_ms",
+        "number": 9,
+        "type": "uint64",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "client_time_ms",
+        "number": 10,
+        "type": "uint64",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "retcode",
+        "number": 6,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "GetAvatarDataCsReq": [
+      {
+        "name": "is_get_all",
+        "number": 10,
+        "type": "bool",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "Avatar": [
+      {
+        "name": "base_avatar_id",
+        "number": 8,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "level",
+        "number": 2,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "is_marked",
+        "number": 6,
+        "type": "bool",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "equipment_unique_id",
+        "number": 12,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "exp",
+        "number": 7,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "cur_multi_path_avatar_type",
+        "number": 9,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "promotion",
+        "number": 11,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "first_met_time_stamp",
+        "number": 4,
+        "type": "uint64",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "has_taken_promotion_reward_list",
+        "number": 3,
+        "type": "uint32",
+        "repeated": true,
+        "descriptor": ".{ .PackedList = .{ .Varint = .Simple } }",
+        "oneof": null
+      }
+    ],
+    "EquipRelic": [
+      {
+        "name": "type",
+        "number": 14,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "relic_unique_id",
+        "number": 1,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "AvatarPathSkillTree": [
+      {
+        "name": "point_id",
+        "number": 12,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "level",
+        "number": 7,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "AvatarPathData": [
+      {
+        "name": "avatar_id",
+        "number": 1,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "equip_relic_list",
+        "number": 10,
+        "type": "EquipRelic",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .SubMessage = {} } }",
+        "oneof": null
+      },
+      {
+        "name": "path_equipment_id",
+        "number": 14,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "dressed_skin_id",
+        "number": 3,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "unlock_timestamp",
+        "number": 5,
+        "type": "uint64",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "rank",
+        "number": 4,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "avatar_path_skill_tree",
+        "number": 12,
+        "type": "AvatarPathSkillTree",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .SubMessage = {} } }",
+        "oneof": null
+      }
+    ],
+    "GetAvatarDataScRsp": [
+      {
+        "name": "retcode",
+        "number": 15,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "is_get_all",
+        "number": 7,
+        "type": "bool",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "avatar_list",
+        "number": 13,
+        "type": "Avatar",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .SubMessage = {} } }",
+        "oneof": null
+      },
+      {
+        "name": "skin_list",
+        "number": 4,
+        "type": "uint32",
+        "repeated": true,
+        "descriptor": ".{ .PackedList = .{ .Varint = .Simple } }",
+        "oneof": null
+      },
+      {
+        "name": "avatar_path_data_info_list",
+        "number": 6,
+        "type": "AvatarPathData",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .SubMessage = {} } }",
+        "oneof": null
+      },
+      {
+        "name": "basic_type_id_list",
+        "number": 8,
+        "type": "uint32",
+        "repeated": true,
+        "descriptor": ".{ .PackedList = .{ .Varint = .Simple } }",
+        "oneof": null
+      }
+    ],
+    "GetCurLineupDataCsReq": [],
+    "SpBarInfo": [
+      {
+        "name": "cur_sp",
+        "number": 1,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "max_sp",
+        "number": 2,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "LineupAvatar": [
+      {
+        "name": "id",
+        "number": 15,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "avatar_type",
+        "number": 5,
+        "type": "AvatarType",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "satiety",
+        "number": 7,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "sp_bar",
+        "number": 8,
+        "type": "SpBarInfo",
+        "repeated": false,
+        "descriptor": ".{ .SubMessage = {} }",
+        "oneof": null
+      },
+      {
+        "name": "slot",
+        "number": 6,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "hp",
+        "number": 11,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "LineupInfo": [
+      {
+        "name": "index",
+        "number": 2,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "leader_slot",
+        "number": 8,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "game_story_line_id",
+        "number": 4,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "avatar_list",
+        "number": 14,
+        "type": "LineupAvatar",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .SubMessage = {} } }",
+        "oneof": null
+      },
+      {
+        "name": "name",
+        "number": 9,
+        "type": "string",
+        "repeated": false,
+        "descriptor": ".String",
+        "oneof": null
+      },
+      {
+        "name": "extra_lineup_type",
+        "number": 7,
+        "type": "ExtraLineupType",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "plane_id",
+        "number": 12,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "mp",
+        "number": 6,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "is_virtual",
+        "number": 1,
+        "type": "bool",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "max_mp",
+        "number": 11,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "GetCurLineupDataScRsp": [
+      {
+        "name": "lineup",
+        "number": 7,
+        "type": "LineupInfo",
+        "repeated": false,
+        "descriptor": ".{ .SubMessage = {} }",
+        "oneof": null
+      },
+      {
+        "name": "retcode",
+        "number": 5,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "GetAllLineupDataCsReq": [],
+    "GetAllLineupDataScRsp": [
+      {
+        "name": "lineup_list",
+        "number": 4,
+        "type": "LineupInfo",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .SubMessage = {} } }",
+        "oneof": null
+      },
+      {
+        "name": "cur_index",
+        "number": 14,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "retcode",
+        "number": 2,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "GetCurSceneInfoCsReq": [],
+    "Vector": [
+      {
+        "name": "x",
+        "number": 1,
+        "type": "sint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .ZigZagOptimized }",
+        "oneof": null
+      },
+      {
+        "name": "y",
+        "number": 2,
+        "type": "sint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .ZigZagOptimized }",
+        "oneof": null
+      },
+      {
+        "name": "z",
+        "number": 3,
+        "type": "sint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .ZigZagOptimized }",
+        "oneof": null
+      }
+    ],
+    "MotionInfo": [
+      {
+        "name": "rot",
+        "number": 5,
+        "type": "Vector",
+        "repeated": false,
+        "descriptor": ".{ .SubMessage = {} }",
+        "oneof": null
+      },
+      {
+        "name": "pos",
+        "number": 2,
+        "type": "Vector",
+        "repeated": false,
+        "descriptor": ".{ .SubMessage = {} }",
+        "oneof": null
+      }
+    ],
+    "SceneActorInfo": [
+      {
+        "name": "avatar_type",
+        "number": 4,
+        "type": "AvatarType",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "base_avatar_id",
+        "number": 5,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "map_layer",
+        "number": 7,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "uid",
+        "number": 1,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "SceneNpcMonsterInfo": [
+      {
+        "name": "monster_id",
+        "number": 15,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "event_id",
+        "number": 8,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "world_level",
+        "number": 2,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "SceneNpcInfo": [
+      {
+        "name": "npc_id",
+        "number": 7,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "ScenePropInfo": [
+      {
+        "name": "prop_state",
+        "number": 15,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "life_time_ms",
+        "number": 7,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "prop_id",
+        "number": 5,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "create_time_ms",
+        "number": 2,
+        "type": "uint64",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "SceneEntityInfo": [
+      {
+        "name": "entity_id",
+        "number": 10,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "inst_id",
+        "number": 2,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "motion",
+        "number": 1,
+        "type": "MotionInfo",
+        "repeated": false,
+        "descriptor": ".{ .SubMessage = {} }",
+        "oneof": null
+      },
+      {
+        "name": "group_id",
+        "number": 13,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "actor",
+        "number": 8,
+        "type": "SceneActorInfo",
+        "repeated": false,
+        "descriptor": ".{ .SubMessage = {} }",
+        "oneof": "entity"
+      },
+      {
+        "name": "npc_monster",
+        "number": 14,
+        "type": "SceneNpcMonsterInfo",
+        "repeated": false,
+        "descriptor": ".{ .SubMessage = {} }",
+        "oneof": "entity"
+      },
+      {
+        "name": "npc",
+        "number": 4,
+        "type": "SceneNpcInfo",
+        "repeated": false,
+        "descriptor": ".{ .SubMessage = {} }",
+        "oneof": "entity"
+      },
+      {
+        "name": "prop",
+        "number": 9,
+        "type": "ScenePropInfo",
+        "repeated": false,
+        "descriptor": ".{ .SubMessage = {} }",
+        "oneof": "entity"
+      }
+    ],
+    "TeleportInfo": [
+      {
+        "name": "reason",
+        "number": 4,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "teleport_id",
+        "number": 7,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "SceneIdentifier": [
+      {
+        "name": "game_story_line_id",
+        "number": 10,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "content_id",
+        "number": 3,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "floor_id",
+        "number": 12,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "teleport_info",
+        "number": 1871,
+        "type": "TeleportInfo",
+        "repeated": false,
+        "descriptor": ".{ .SubMessage = {} }",
+        "oneof": null
+      }
+    ],
+    "SceneEntityGroupInfo_PropertyMapEntry": [
+      {
+        "name": "key",
+        "number": 1,
+        "type": "string",
+        "repeated": false,
+        "descriptor": ".String",
+        "oneof": null
+      },
+      {
+        "name": "value",
+        "number": 2,
+        "type": "int32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "SceneEntityGroupInfo": [
+      {
+        "name": "property_map",
+        "number": 10,
+        "type": "SceneEntityGroupInfo_PropertyMapEntry",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .SubMessage = {} } }",
+        "oneof": null
+      },
+      {
+        "name": "entity_list",
+        "number": 3,
+        "type": "SceneEntityInfo",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .SubMessage = {} } }",
+        "oneof": null
+      },
+      {
+        "name": "state",
+        "number": 12,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "group_id",
+        "number": 2,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "SceneInfo": [
+      {
+        "name": "entry_id",
+        "number": 6,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "floor_id",
+        "number": 13,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "plane_id",
+        "number": 7,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "leader_entity_id",
+        "number": 14,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "world_id",
+        "number": 10,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "entity_list",
+        "number": 8,
+        "type": "SceneEntityInfo",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .SubMessage = {} } }",
+        "oneof": null
+      },
+      {
+        "name": "scene_identifier",
+        "number": 770,
+        "type": "SceneIdentifier",
+        "repeated": false,
+        "descriptor": ".{ .SubMessage = {} }",
+        "oneof": null
+      },
+      {
+        "name": "game_mode_type",
+        "number": 1,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "entity_group_list",
+        "number": 329,
+        "type": "SceneEntityGroupInfo",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .SubMessage = {} } }",
+        "oneof": null
+      }
+    ],
+    "GetCurSceneInfoScRsp": [
+      {
+        "name": "scene",
+        "number": 4,
+        "type": "SceneInfo",
+        "repeated": false,
+        "descriptor": ".{ .SubMessage = {} }",
+        "oneof": null
+      },
+      {
+        "name": "retcode",
+        "number": 8,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "EntityMotion": [
+      {
+        "name": "map_layer",
+        "number": 8,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "entity_id",
+        "number": 6,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "motion",
+        "number": 1,
+        "type": "MotionInfo",
+        "repeated": false,
+        "descriptor": ".{ .SubMessage = {} }",
+        "oneof": null
+      }
+    ],
+    "SceneEntityMoveCsReq": [
+      {
+        "name": "entry_id",
+        "number": 5,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "entity_motion_list",
+        "number": 4,
+        "type": "EntityMotion",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .SubMessage = {} } }",
+        "oneof": null
+      },
+      {
+        "name": "interact_id",
+        "number": 10,
+        "type": "uint64",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "SceneEntityMoveScRsp": [
+      {
+        "name": "entity_motion_list",
+        "number": 7,
+        "type": "EntityMotion",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .SubMessage = {} } }",
+        "oneof": null
+      },
+      {
+        "name": "retcode",
+        "number": 10,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "StartCocoonStageCsReq": [
+      {
+        "name": "world_level",
+        "number": 14,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "wave",
+        "number": 9,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "prop_entity_id",
+        "number": 3,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "cocoon_id",
+        "number": 4,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "BattleBuff_DynamicValuesEntry": [
+      {
+        "name": "key",
+        "number": 1,
+        "type": "string",
+        "repeated": false,
+        "descriptor": ".String",
+        "oneof": null
+      },
+      {
+        "name": "value",
+        "number": 2,
+        "type": "float",
+        "repeated": false,
+        "descriptor": ".{ .FixedInt = .I32 }",
+        "oneof": null
+      }
+    ],
+    "BattleBuff": [
+      {
+        "name": "id",
+        "number": 1,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "level",
+        "number": 2,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "owner_index",
+        "number": 3,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "wave_flag",
+        "number": 4,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "target_index_list",
+        "number": 5,
+        "type": "uint32",
+        "repeated": true,
+        "descriptor": ".{ .PackedList = .{ .Varint = .Simple } }",
+        "oneof": null
+      },
+      {
+        "name": "dynamic_values",
+        "number": 6,
+        "type": "BattleBuff_DynamicValuesEntry",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .SubMessage = {} } }",
+        "oneof": null
+      }
+    ],
+    "SceneMonster": [
+      {
+        "name": "max_hp",
+        "number": 5,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "cur_hp",
+        "number": 4,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "monster_id",
+        "number": 3,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "SceneMonsterWaveParam": [
+      {
+        "name": "level",
+        "number": 14,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "hard_level_group",
+        "number": 12,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "elite_group",
+        "number": 7,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "SceneMonsterWave": [
+      {
+        "name": "battle_wave_id",
+        "number": 1,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "battle_stage_id",
+        "number": 10,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "monster_list",
+        "number": 5,
+        "type": "SceneMonster",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .SubMessage = {} } }",
+        "oneof": null
+      },
+      {
+        "name": "monster_param",
+        "number": 12,
+        "type": "SceneMonsterWaveParam",
+        "repeated": false,
+        "descriptor": ".{ .SubMessage = {} }",
+        "oneof": null
+      }
+    ],
+    "AvatarSkillTree": [
+      {
+        "name": "point_id",
+        "number": 1,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "level",
+        "number": 2,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "BattleEquipment": [
+      {
+        "name": "id",
+        "number": 1,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "level",
+        "number": 2,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "promotion",
+        "number": 3,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "rank",
+        "number": 4,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "RelicAffix": [
+      {
+        "name": "affix_id",
+        "number": 1,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "cnt",
+        "number": 2,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "step",
+        "number": 3,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "BattleRelic": [
+      {
+        "name": "id",
+        "number": 1,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "level",
+        "number": 2,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "main_affix_id",
+        "number": 3,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "sub_affix_list",
+        "number": 4,
+        "type": "RelicAffix",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .SubMessage = {} } }",
+        "oneof": null
+      },
+      {
+        "name": "unique_id",
+        "number": 5,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "set_id",
+        "number": 6,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "type",
+        "number": 7,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "rarity",
+        "number": 8,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "BattleAvatar": [
+      {
+        "name": "avatar_type",
+        "number": 1,
+        "type": "AvatarType",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "id",
+        "number": 2,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "level",
+        "number": 3,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "rank",
+        "number": 4,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "index",
+        "number": 5,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "skilltree_list",
+        "number": 6,
+        "type": "AvatarSkillTree",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .SubMessage = {} } }",
+        "oneof": null
+      },
+      {
+        "name": "equipment_list",
+        "number": 7,
+        "type": "BattleEquipment",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .SubMessage = {} } }",
+        "oneof": null
+      },
+      {
+        "name": "hp",
+        "number": 8,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "promotion",
+        "number": 10,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "relic_list",
+        "number": 11,
+        "type": "BattleRelic",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .SubMessage = {} } }",
+        "oneof": null
+      },
+      {
+        "name": "world_level",
+        "number": 12,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "assist_uid",
+        "number": 13,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "sp_bar",
+        "number": 16,
+        "type": "SpBarInfo",
+        "repeated": false,
+        "descriptor": ".{ .SubMessage = {} }",
+        "oneof": null
+      },
+      {
+        "name": "enhanced_id",
+        "number": 19,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "SceneBattleInfo": [
+      {
+        "name": "monster_wave_length",
+        "number": 4,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "battle_id",
+        "number": 8,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "stage_id",
+        "number": 10,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "logic_random_seed",
+        "number": 12,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "buff_list",
+        "number": 3,
+        "type": "BattleBuff",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .SubMessage = {} } }",
+        "oneof": null
+      },
+      {
+        "name": "monster_wave_list",
+        "number": 1,
+        "type": "SceneMonsterWave",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .SubMessage = {} } }",
+        "oneof": null
+      },
+      {
+        "name": "world_level",
+        "number": 14,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "battle_avatar_list",
+        "number": 2,
+        "type": "BattleAvatar",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .SubMessage = {} } }",
+        "oneof": null
+      },
+      {
+        "name": "rounds_limit",
+        "number": 11,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "StartCocoonStageScRsp": [
+      {
+        "name": "wave",
+        "number": 3,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "retcode",
+        "number": 13,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "battle_info",
+        "number": 15,
+        "type": "SceneBattleInfo",
+        "repeated": false,
+        "descriptor": ".{ .SubMessage = {} }",
+        "oneof": null
+      },
+      {
+        "name": "challenge_cnt",
+        "number": 14,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "prop_entity_id",
+        "number": 11,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "cocoon_id",
+        "number": 6,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "QuickStartCocoonStageCsReq": [
+      {
+        "name": "world_level",
+        "number": 9,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "cocoon_id",
+        "number": 5,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "wave",
+        "number": 11,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "QuickStartCocoonStageScRsp": [
+      {
+        "name": "battle_info",
+        "number": 2,
+        "type": "SceneBattleInfo",
+        "repeated": false,
+        "descriptor": ".{ .SubMessage = {} }",
+        "oneof": null
+      },
+      {
+        "name": "wave",
+        "number": 11,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "retcode",
+        "number": 4,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "cocoon_id",
+        "number": 12,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "AvatarBattleInfo": [
+      {
+        "name": "avatar_type",
+        "number": 1,
+        "type": "AvatarType",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "id",
+        "number": 2,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "total_damage",
+        "number": 10,
+        "type": "double",
+        "repeated": false,
+        "descriptor": ".{ .FixedInt = .I64 }",
+        "oneof": null
+      },
+      {
+        "name": "stage_id",
+        "number": 15,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "BattleStatistics": [
+      {
+        "name": "total_battle_turns",
+        "number": 1,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "total_auto_turns",
+        "number": 2,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "avatar_id_list",
+        "number": 3,
+        "type": "uint32",
+        "repeated": true,
+        "descriptor": ".{ .PackedList = .{ .Varint = .Simple } }",
+        "oneof": null
+      },
+      {
+        "name": "ultra_cnt",
+        "number": 4,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "total_delay_cumulate",
+        "number": 5,
+        "type": "double",
+        "repeated": false,
+        "descriptor": ".{ .FixedInt = .I64 }",
+        "oneof": null
+      },
+      {
+        "name": "cost_time",
+        "number": 6,
+        "type": "double",
+        "repeated": false,
+        "descriptor": ".{ .FixedInt = .I64 }",
+        "oneof": null
+      },
+      {
+        "name": "battle_avatar_list",
+        "number": 7,
+        "type": "AvatarBattleInfo",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .SubMessage = {} } }",
+        "oneof": null
+      },
+      {
+        "name": "round_cnt",
+        "number": 9,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "cocoon_dead_wave",
+        "number": 10,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "avatar_battle_turns",
+        "number": 11,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "monster_battle_turns",
+        "number": 12,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "challenge_score",
+        "number": 14,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "end_reason",
+        "number": 19,
+        "type": "BattleEndReason",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "PVEBattleResultCsReq": [
+      {
+        "name": "stt",
+        "number": 10,
+        "type": "BattleStatistics",
+        "repeated": false,
+        "descriptor": ".{ .SubMessage = {} }",
+        "oneof": null
+      },
+      {
+        "name": "client_res_version",
+        "number": 4,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "battle_id",
+        "number": 7,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "end_status",
+        "number": 13,
+        "type": "BattleEndStatus",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "stage_id",
+        "number": 14,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "Item": [
+      {
+        "name": "main_affix_id",
+        "number": 4,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "rank",
+        "number": 3,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "unique_id",
+        "number": 11,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "num",
+        "number": 5,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "level",
+        "number": 14,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "promotion",
+        "number": 12,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "item_id",
+        "number": 15,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "ItemList": [
+      {
+        "name": "item_list",
+        "number": 1,
+        "type": "Item",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .SubMessage = {} } }",
+        "oneof": null
+      }
+    ],
+    "PVEBattleResultScRsp": [
+      {
+        "name": "end_status",
+        "number": 9,
+        "type": "BattleEndStatus",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "retcode",
+        "number": 7,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "drop_data",
+        "number": 14,
+        "type": "ItemList",
+        "repeated": false,
+        "descriptor": ".{ .SubMessage = {} }",
+        "oneof": null
+      },
+      {
+        "name": "battle_avatar_list",
+        "number": 8,
+        "type": "BattleAvatar",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .SubMessage = {} } }",
+        "oneof": null
+      },
+      {
+        "name": "multiple_drop_data",
+        "number": 12,
+        "type": "ItemList",
+        "repeated": false,
+        "descriptor": ".{ .SubMessage = {} }",
+        "oneof": null
+      },
+      {
+        "name": "stage_id",
+        "number": 10,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "battle_id",
+        "number": 6,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "SyncLineupNotify": [
+      {
+        "name": "lineup",
+        "number": 12,
+        "type": "LineupInfo",
+        "repeated": false,
+        "descriptor": ".{ .SubMessage = {} }",
+        "oneof": null
+      },
+      {
+        "name": "reason_list",
+        "number": 9,
+        "type": "SyncLineupReason",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .Varint = .Simple } }",
+        "oneof": null
+      }
+    ],
+    "Material": [
+      {
+        "name": "num",
+        "number": 9,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "tid",
+        "number": 12,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "PlayerSyncScNotify": [
+      {
+        "name": "material_list",
+        "number": 8,
+        "type": "Material",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .SubMessage = {} } }",
+        "oneof": null
+      },
+      {
+        "name": "basic_info",
+        "number": 7,
+        "type": "PlayerBasicInfo",
+        "repeated": false,
+        "descriptor": ".{ .SubMessage = {} }",
+        "oneof": null
+      }
+    ],
+    "GetBasicInfoCsReq": [],
+    "GetBasicInfoScRsp": [
+      {
+        "name": "gender",
+        "number": 3,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "is_gender_set",
+        "number": 5,
+        "type": "bool",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "next_recover_time",
+        "number": 4,
+        "type": "int64",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "week_cocoon_finished_count",
+        "number": 7,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "cur_day",
+        "number": 15,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "gameplay_birthday",
+        "number": 6,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "exchange_times",
+        "number": 2,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "retcode",
+        "number": 12,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "last_set_nickname_time",
+        "number": 11,
+        "type": "int64",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "ContentPackageGetDataCsReq": [],
+    "ContentPackageInfo": [
+      {
+        "name": "content_id",
+        "number": 10,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "status",
+        "number": 2,
+        "type": "ContentPackageStatus",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "ContentPackageData": [
+      {
+        "name": "content_package_list",
+        "number": 7,
+        "type": "ContentPackageInfo",
+        "repeated": true,
+        "descriptor": ".{ .List = .{ .SubMessage = {} } }",
+        "oneof": null
+      },
+      {
+        "name": "cur_content_id",
+        "number": 9,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "ContentPackageGetDataScRsp": [
+      {
+        "name": "data",
+        "number": 12,
+        "type": "ContentPackageData",
+        "repeated": false,
+        "descriptor": ".{ .SubMessage = {} }",
+        "oneof": null
+      },
+      {
+        "name": "retcode",
+        "number": 14,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ],
+    "ContentPackageSyncDataScNotify": [
+      {
+        "name": "data",
+        "number": 3,
+        "type": "ContentPackageData",
+        "repeated": false,
+        "descriptor": ".{ .SubMessage = {} }",
+        "oneof": null
+      }
+    ],
+    "GetCurBattleInfoCsReq": [],
+    "GetCurBattleInfoScRsp": [
+      {
+        "name": "retcode",
+        "number": 9,
+        "type": "uint32",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      },
+      {
+        "name": "battle_info",
+        "number": 14,
+        "type": "SceneBattleInfo",
+        "repeated": false,
+        "descriptor": ".{ .SubMessage = {} }",
+        "oneof": null
+      },
+      {
+        "name": "last_end_status",
+        "number": 2,
+        "type": "BattleEndStatus",
+        "repeated": false,
+        "descriptor": ".{ .Varint = .Simple }",
+        "oneof": null
+      }
+    ]
+  },
+  "omitted_fields": {
+    "RegionInfo": [
+      "OENGANOFKFC"
+    ],
+    "Dispatch": [
+      "FADNLDFLEPN"
+    ],
+    "GateServer": [
+      "anniv3rd_live_inprogress",
+      "enable_save_replay_file",
+      "web_tool_url",
+      "stop_begin_time",
+      "official_community_url",
+      "design_data_relogin_type",
+      "lua_version",
+      "rogue_tourn_notice_pic_type",
+      "anniv3rd_overseas",
+      "network_diagnostic",
+      "rogue_tourn_build_ref_api_req_color_header_key",
+      "enable_asset_bundle_version_update",
+      "stop_end_time",
+      "rogue_tourn_notice_id",
+      "grid_fight_game_ref_cdn_url",
+      "asb_relogin_desc",
+      "community_activity_url",
+      "custom_service_url",
+      "forbid_recharge",
+      "OLGOHLGJFHI",
+      "NNFLHCGDGJM",
+      "user_agreement_url",
+      "privacy_in_game_url",
+      "ban_appeal_url",
+      "online_replay_download_url",
+      "player_return_questionnaire_b_url",
+      "dispatch_info",
+      "JDMJIGDPDNB",
+      "event_tracking_open",
+      "ftc_switch",
+      "enable_upload_battle_log",
+      "predownload_update_url",
+      "redeem_code_url",
+      "AMBIJDOKFKK",
+      "mtp_switch",
+      "hot_point_url",
+      "design_data_relogin_desc",
+      "game_start_customer_service_url",
+      "cloud_game_url",
+      "rogue_tourn_build_ref_static_data_url_prefix",
+      "third_privacy_in_game_url",
+      "close_redeem_code",
+      "grid_fight_game_ref_color_header_value",
+      "gate_server_ipv6_enable",
+      "cdn_ipv6_enable",
+      "asb_relogin_type",
+      "anniv2nd_os",
+      "player_return_questionnaire_a_url",
+      "rogue_tourn_build_ref_api_req_color_header_value",
+      "ios_exam",
+      "anniv3rd_live_mainpage",
+      "temporary_maintenance_url",
+      "operation_feedback_url",
+      "grid_fight_intro_h5_url",
+      "online_replay_upload_url",
+      "anniv2nd_book",
+      "teenager_privacy_in_game_url",
+      "watermark_enable",
+      "player_return_invite_h5_url",
+      "anniv3rd_fes",
+      "login_white_msg",
+      "anniv2nd_concert",
+      "gate_server_ipv6",
+      "rogue_tourn_h5_url",
+      "anniv3rd_live_recorded",
+      "grid_fight_game_ref_color_header_key",
+      "gate_server_msg",
+      "anniv3rd_callback",
+      "rogue_tourn_build_ref_h5_url",
+      "grid_fight_game_ref_h5_url",
+      "rogue_magic_h5_url",
+      "android_middle_package_enable",
+      "enable_design_data_bundle_version_update",
+      "server_description",
+      "anniv2nd_callback",
+      "anniv3rd_book",
+      "personal_information_in_game_url"
+    ],
+    "PlayerGetTokenCsReq": [
+      "HJLMPKKOGAB",
+      "KFFJECMDGBJ",
+      "GBJGFHLBCEI",
+      "MLLMEPDJGFM",
+      "KFLKHNMNBLE",
+      "IPMOKDFGMLC",
+      "IFNCKPHGNHE"
+    ],
+    "PlayerGetTokenScRsp": [
+      "authkey",
+      "secret_key_seed",
+      "black_info",
+      "stop_desc"
+    ],
+    "PlayerLoginCsReq": [
+      "HFCEGDKGHHN",
+      "HGMADEGKAFJ",
+      "CAKJNBCPBBF",
+      "BNDEJJNBLPM",
+      "signature",
+      "platform_uuid",
+      "IFNCKPHGNHE",
+      "OKBMHHFOEMO",
+      "MNLFLBMIDOI",
+      "BHEEANODBOI",
+      "IFOCLPDBKPP",
+      "CPDPKMHHCGA",
+      "EFACJGNMJJM",
+      "ALOCCGKADIB",
+      "FHIPAPFFHIA",
+      "ICNEHENFEAD",
+      "HGPGDIDFCKG",
+      "MJANJHJIDLG",
+      "platform_nick",
+      "EAHIDEOGMBN",
+      "OIDAFEIICDN",
+      "PAIHOLDMMDP",
+      "CJGPGMNFKLN",
+      "HEHMGNAEMPK",
+      "LMFMFKIDLAE"
+    ],
+    "PlayerBasicInfo": [],
+    "PlayerLoginScRsp": [
+      "PHGGIKFJPFI",
+      "OHHALBDPEDC",
+      "DEINAEJHDOF",
+      "CNPOLFMNOBG"
+    ],
+    "PlayerLoginFinishCsReq": [],
+    "PlayerLoginFinishScRsp": [],
+    "PlayerHeartBeatCsReq": [
+      "GAKLHAGDGDE",
+      "sc_data"
+    ],
+    "PlayerHeartBeatScRsp": [
+      "download_data"
+    ],
+    "GetAvatarDataCsReq": [
+      "JFDCOLNGGJC"
+    ],
+    "Avatar": [],
+    "EquipRelic": [],
+    "AvatarPathSkillTree": [],
+    "AvatarPathData": [
+      "unk_enhanced_id"
+    ],
+    "GetAvatarDataScRsp": [
+      "MFEFMPJPKLF",
+      "player_outfit_data",
+      "NFDGCCADCGA",
+      "AIICGDFLHJB"
+    ],
+    "GetCurLineupDataCsReq": [],
+    "SpBarInfo": [],
+    "LineupAvatar": [],
+    "LineupInfo": [
+      "PCNLBFMKHGH",
+      "OAAKJFFOILE",
+      "GDIKCBFLEGN",
+      "MFJLHNCINDM"
+    ],
+    "GetCurLineupDataScRsp": [],
+    "GetAllLineupDataCsReq": [],
+    "GetAllLineupDataScRsp": [],
+    "GetCurSceneInfoCsReq": [],
+    "Vector": [],
+    "MotionInfo": [],
+    "SceneActorInfo": [],
+    "SceneNpcMonsterInfo": [
+      "KOKECMCHFDM",
+      "HFBJKCMJCAO",
+      "extra_info",
+      "PLKFGAJLMPK"
+    ],
+    "SceneNpcInfo": [
+      "extra_info"
+    ],
+    "ScenePropInfo": [
+      "extra_info",
+      "trigger_name_list"
+    ],
+    "SceneEntityInfo": [
+      "summon_unit"
+    ],
+    "TeleportInfo": [],
+    "SceneIdentifier": [],
+    "SceneEntityGroupInfo_PropertyMapEntry": [],
+    "SceneEntityGroupInfo": [],
+    "SceneInfo": [
+      "lighten_section_list",
+      "FICJLHEDOBL",
+      "interact_id",
+      "PEOCCNCEPOL",
+      "content_id",
+      "dimension_id",
+      "game_story_line_id",
+      "GPLFLEJGGKL",
+      "client_pos_version",
+      "scene_mission_info",
+      "MDOFFILNFEC",
+      "floor_saved_data",
+      "opened_chests_list",
+      "custom_data_list"
+    ],
+    "GetCurSceneInfoScRsp": [],
+    "EntityMotion": [
+      "KOFGLPKEBDN"
+    ],
+    "SceneEntityMoveCsReq": [],
+    "SceneEntityMoveScRsp": [],
+    "StartCocoonStageCsReq": [
+      "HMPAFLDIPPB",
+      "MLLJAHABPMH"
+    ],
+    "BattleBuff_DynamicValuesEntry": [],
+    "BattleBuff": [],
+    "SceneMonster": [
+      "extra_info"
+    ],
+    "SceneMonsterWaveParam": [
+      "HMGGPBCJGMC",
+      "IGFGLMCAKON"
+    ],
+    "SceneMonsterWave": [
+      "PCMEBEOHJCK"
+    ],
+    "AvatarSkillTree": [],
+    "BattleEquipment": [],
+    "RelicAffix": [],
+    "BattleRelic": [],
+    "BattleAvatar": [
+      "MGAENCPOBKN",
+      "EAFEGFFAIKG",
+      "EKKJMMGCMGI"
+    ],
+    "SceneBattleInfo": [
+      "AGDDOALNMJO",
+      "battle_target_info",
+      "NDNHKHINKNO",
+      "battle_rogue_magic_info",
+      "OCENOGOBBBD",
+      "OALFPPAOJJP",
+      "battle_event",
+      "JMIAJEBBGHH",
+      "ANJBEMCODLN",
+      "AJPGLBJONKO"
+    ],
+    "StartCocoonStageScRsp": [],
+    "QuickStartCocoonStageCsReq": [
+      "MLLJAHABPMH",
+      "HMPAFLDIPPB"
+    ],
+    "QuickStartCocoonStageScRsp": [],
+    "AvatarBattleInfo": [
+      "AHGHHCFGNJP",
+      "PEIEPGFFHEK",
+      "CMGFMOGEJHA",
+      "BFCOANMEIBL",
+      "PDLOIBBHPCN",
+      "EAOFPKFCLOC",
+      "OOHMPMHFAEK",
+      "CHFLCHCELMA",
+      "GJDLOOJHINC",
+      "BGGJJOAMKAA",
+      "BPPPEOOBPFO",
+      "BIDEHKOEEOO",
+      "AEBKLONLNDL",
+      "CNCIIBNPEOD",
+      "LCFGBKJMGEH",
+      "FJFPBNFOLME",
+      "NPGCHIGGALL",
+      "KPGKLDHOMEO",
+      "AEMEMANIOPF",
+      "LLFAJCFLGCM",
+      "POELDEFEDGB",
+      "LCPDOEAKLJM",
+      "FIKNCICNHPO",
+      "NGJDACPDMJC",
+      "HKAMEGPLPMK",
+      "DHLALMKOCBI",
+      "APDAKGMBEHE",
+      "AFGACBHKKCL",
+      "POLEKPDEFFB",
+      "CPNGPIHBLOE",
+      "assist_uid",
+      "KHEOJDNANMF",
+      "OBBGIGFMOCM",
+      "MALEKBCHKAL",
+      "KILFEDJDDDN",
+      "KINGBOPAOMB",
+      "DHKNCJBFIPN",
+      "NJBFDIAJKGO",
+      "ODNDKNPHOJC",
+      "EKIJFOPPBFI",
+      "OKDFJHPMDFI",
+      "MLOFDKOFLMJ",
+      "NHILPDLGAGI",
+      "PJPONEJBBDJ",
+      "BNPHHPEKOKO",
+      "FPBLHKCGMBJ",
+      "KKLMBJEFDGH",
+      "AKJKDGGJCDB",
+      "ONJAKEICLEF",
+      "FIMPFPJLHDA",
+      "enhanced_id",
+      "IPAPGEJAGFP",
+      "PPKNEGBBDNN",
+      "PJKINIFFOCN",
+      "DAOHIMDOFME"
+    ],
+    "BattleStatistics": [
+      "monster_list",
+      "custom_values",
+      "BDCHEJKPOAF",
+      "OKFALMGFHMA",
+      "AKFFKEMDPLG",
+      "ENPBMPKGLOM",
+      "EIPBMOMKJDO",
+      "ECFFMBFGPOJ",
+      "battle_target_info",
+      "LGKAKIEEOMG",
+      "PMCEKILFBIO",
+      "DOAFGHLAICM",
+      "ADGBAKBCOKF",
+      "DCMAHKHAFEH",
+      "AIOKGNBLMDI",
+      "NPFDEJPPPLI",
+      "DBKFEPMIMFF",
+      "MHPDKEDHELL",
+      "BCCIIEGCFAA",
+      "IAGKLJEKAOL",
+      "OFMIGBJPKMH",
+      "IEOGEFBLNEL",
+      "MHLCFDEGOGN",
+      "APAGMJNECCN",
+      "GBLEKIOCFMA",
+      "MEBKILMPMGA",
+      "KFPEKBCKKPM",
+      "ILNNGPJAEGH",
+      "MFOJKJGKDGD"
+    ],
+    "PVEBattleResultCsReq": [
+      "OOBJNKHPEKM",
+      "ACKLNIIHFOI",
+      "op_list",
+      "EGJDFIPLGMO",
+      "debug_extra_info",
+      "JLLKJDEPCCD",
+      "EAHIDEOGMBN",
+      "turn_snapshot_hash",
+      "BEBEFHIBKAE",
+      "ABCBFJMOCJP"
+    ],
+    "Item": [],
+    "ItemList": [],
+    "PVEBattleResultScRsp": [
+      "OLCHFBHJPBC",
+      "FBABLDGECOC",
+      "DPFGEPCLBNM",
+      "event_id",
+      "MJHBHJCGEBF",
+      "OGLIKLAEJJG",
+      "ICJNNPDOEIH",
+      "PNHDNKOKFIC",
+      "FCONOKGGGNG",
+      "IELJAKNICBJ",
+      "EFGOGAJPONH"
+    ],
+    "SyncLineupNotify": [],
+    "Material": [
+      "IBBEMJHHPNG"
+    ],
+    "PlayerSyncScNotify": [
+      "player_outfit_data",
+      "del_equipment_list",
+      "mission_sync",
+      "LEMGABLDCFF",
+      "EAAPMOMODEG",
+      "LAMGIOMOFIJ",
+      "EPIIOBFKCLE",
+      "equipment_list",
+      "sync_status",
+      "FDAKCLMCBLE",
+      "relic_list",
+      "IKDEDFLFPDE",
+      "ODDHEKBANJJ",
+      "BDKDCNOMHNJ",
+      "del_relic_list",
+      "quest_list",
+      "avatar_sync",
+      "wait_del_resource_list"
+    ],
+    "GetBasicInfoCsReq": [],
+    "GetBasicInfoScRsp": [
+      "player_setting_info"
+    ],
+    "ContentPackageGetDataCsReq": [],
+    "ContentPackageInfo": [],
+    "ContentPackageData": [],
+    "ContentPackageGetDataScRsp": [],
+    "ContentPackageSyncDataScNotify": [],
+    "GetCurBattleInfoCsReq": [],
+    "GetCurBattleInfoScRsp": [
+      "JOLKLEJHBAL",
+      "PKOMLMHOFBB"
+    ]
+  },
+  "empty_request_projection": {
+    "GetBasicInfoCsReq": "services/avatar.zig:onGetBasicInfo 不读取请求正文；仅声明零字段消费投影。"
+  },
+  "cmdids": {
+    "PlayerGetTokenCsReq": 44,
+    "PlayerGetTokenScRsp": 19,
+    "PlayerLoginCsReq": 32,
+    "PlayerLoginScRsp": 13,
+    "PlayerLoginFinishCsReq": 65,
+    "PlayerLoginFinishScRsp": 36,
+    "PlayerHeartBeatCsReq": 30,
+    "PlayerHeartBeatScRsp": 47,
+    "GetAvatarDataCsReq": 332,
+    "GetAvatarDataScRsp": 313,
+    "GetCurLineupDataCsReq": 729,
+    "GetCurLineupDataScRsp": 778,
+    "GetAllLineupDataCsReq": 721,
+    "GetAllLineupDataScRsp": 710,
+    "GetCurSceneInfoCsReq": 1483,
+    "GetCurSceneInfoScRsp": 1424,
+    "SceneEntityMoveCsReq": 1432,
+    "SceneEntityMoveScRsp": 1413,
+    "StartCocoonStageCsReq": 1494,
+    "StartCocoonStageScRsp": 1479,
+    "QuickStartCocoonStageCsReq": 1344,
+    "QuickStartCocoonStageScRsp": 1319,
+    "PVEBattleResultCsReq": 132,
+    "PVEBattleResultScRsp": 113,
+    "SyncLineupNotify": 796,
+    "PlayerSyncScNotify": 632,
+    "GetBasicInfoCsReq": 50,
+    "GetBasicInfoScRsp": 9,
+    "ContentPackageGetDataCsReq": 7537,
+    "ContentPackageGetDataScRsp": 7531,
+    "ContentPackageSyncDataScNotify": 7503,
+    "GetCurBattleInfoCsReq": 144,
+    "GetCurBattleInfoScRsp": 119
+  },
+  "official_cmdid_anchors": {
+    "StartCocoonStageScRsp": 1479
+  },
+  "schema_sha256": "c2704d3f9a640301ce4f688cb96de42c4623bfe889974835748ca1c86416da8f",
+  "license": "参考未明确许可证；保留来源与边界，不声称取得额外授权。"
+}

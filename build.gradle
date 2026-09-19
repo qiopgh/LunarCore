@@ -276,3 +276,42 @@ tasks.register('release450CocoonErrorTest', JavaExec) {
 tasks.named('check') {
     dependsOn tasks.named('release450CocoonErrorTest')
 }
+
+// 候选链与原收包/分发的离线回归；运行目录隔离，避免生成测试配置到检出根。
+tasks.register('candidate450Test', JavaExec) {
+    group = 'verification'
+    description = '验证最小链候选映射、会话分发与帧错误分类'
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass.set('emu.lunarcore.server.game.Candidate450Regression')
+    workingDir layout.buildDirectory.dir('candidate450-test').get().asFile
+    doFirst { workingDir.mkdirs() }
+    systemProperty 'stdout.encoding', 'UTF-8'
+    systemProperty 'stderr.encoding', 'UTF-8'
+    if (providers.gradleProperty('candidate450NegativeControl').orNull == 'true') {
+        args '--negative-control'
+    }
+}
+
+tasks.named('check') {
+    dependsOn tasks.named('candidate450Test')
+}
+
+// 显式指定已有资源时才运行；仅建立回环 HTTP 与独立内存数据库，不启动客户端。
+tasks.register('candidate450ResourceSmoke', JavaExec) {
+    group = 'verification'
+    description = '用已有资源验证固定角色、原业务处理器和断开后数据读取'
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass.set('emu.lunarcore.server.game.Candidate450ResourceSmoke')
+    maxHeapSize = '3g'
+    workingDir layout.buildDirectory.dir('candidate450-resource-smoke').get().asFile
+    systemProperty 'stdout.encoding', 'UTF-8'
+    systemProperty 'stderr.encoding', 'UTF-8'
+    doFirst {
+        workingDir.mkdirs()
+        def resources = providers.gradleProperty('candidate450Resources').orNull
+        if (!resources) throw new GradleException('需要 -Pcandidate450Resources 指定已有资源；不自动下载资源')
+        args file(resources).absolutePath
+    }
+}
