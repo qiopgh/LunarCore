@@ -83,3 +83,33 @@ odin build ./apn-check -vet -strict-style -o:speed -out:apn-check.exe
 原采样器三项观察点已卸载、session已detach、RPC线程已停止；其原退出码5和`TARGET_WINDOW_UNRESPONSIVE:before_stop`保留。正常关闭未完成，随后用原精确身份清理脚本核对本轮PID、创建时间和路径后终止，实测退出0、游戏进程归零。临时新增DLL/配置已按摘要撤回，MITM退出0，服务端经原stop退出1000，端口释放；系统代理、代理环境及信任证书快照一致。
 
 下一步仅在交互桌面恢复可用后，复用上述产物和MITM窗口，以简短管理员Python截图确认界面，再执行必要的本地合成账号登录动作。当前Goal仍仅登录且未完成，不重复全量回归，不推进剧情或战斗。
+
+## SDK原生URL分派与无人值守登录结果（2026-09-20）
+
+交互桌面恢复后，已继续使用同一正式构建、同一回环MITM、同一管理员Python控制器和同一隔离账号输入；没有修改系统代理、hosts、证书或保护设置。当前正式补丁新增的生产差异仅覆盖两个固定SDK模块的URL字符串赋值点：
+
+- `HoYoNetworkSDK.dll`固定摘要为`5dab06df...30d206`，唯一调用模式位于RVA `0x310e`，原字符串赋值目标为`0x1d60`。
+- `HoYoSDKNetworkFallback.dll`固定摘要为`31327b52...cd5d96`，唯一调用模式位于RVA `0x8a41`，原字符串赋值目标为`0xc630`。
+- 两个hook都复用原目标函数复制URL字节，只把`.hoyoverse.com`、`.mihoyo.com`、`.bhsr.com`和`.starrails.com`的authority替换成`cfg.sdk_url`，路径、查询和片段原样保留；非目标域、带userinfo的URL和非HTTP(S)输入不改。
+- URL诊断只记录来源、scheme和host；不记录路径、查询、认证头、正文、账号、密码或票据。
+
+`tools/echium-login/sdk-constructor-bindings.json`使用相对客户端路径，不包含主机私有映射。可在一次性工作目录中运行：
+
+```powershell
+python tools/echium-login/run_sdk_native_check.py `
+  --source <应用补丁后的echium目录> `
+  --bindings tools/echium-login/sdk-constructor-bindings.json `
+  --client-root <固定正式客户端根目录> `
+  --odin <固定Odin可执行文件> `
+  --work <一次性输出目录>
+```
+
+固定DLL哈希、唯一模式和rel32目标共2项通过；两个真实patched回调对10组正反URL共20次均匹配。相同入口的基线、修改和独立回滚结果为`2/0/2`；回滚副本的三个原文件哈希等于上游固定提交，新增`patches/sdk_native.odin`不存在，active候选随后保持修改态。最终原`build.ps1`、配置检查和APN三例检查均退出0。
+
+真实窗口中，两个hook都报告`SDK_URL_ASSIGN_READY`，证明固定模式在目标进程中可安装；验证码出现前没有观察到两个原生分派点的URL调用。管理员脚本已实际完成目标窗口截图、“登录其他账号”点击、账号和密码逐字段合成输入以及“进入游戏”点击；截图确认账号为`SLICE_FIXTURE`、密码为9个掩码字符。提交后客户端出现滑块验证码，未拖动、未关闭或绕过，也未把验证码页面当作登录成功。
+
+该提交窗口经MITM观察到19条HTTP响应元数据，但`loginByPassword`、`/account/risky/api/check`、gateway和UDP事件均为0。曾离线定位`ZFEmbedWeb.dll`的CEF请求回调并构建受限路径候选，但在目标StarRail进程中等待120秒仍未加载该模块，也没有对应子进程；该错误路线已从正式补丁撤销，仅保留私有分析证据。没有通过修改`disable_mmt`或其他风险配置制造通过。
+
+每个窗口结束后，观察器均完成hook卸载、session detach和RPC线程停止，客户端正常退出0；临时DLL、配置和日志撤回，服务端沿原`stop`退出1000，MITM退出0，五个相关端口释放。固定客户端文件哈希未变；系统代理、代理环境和信任证书快照在规范化JSON后完全相同。
+
+当前仅登录Goal仍未完成。下一次必须在用户可操作验证码时复用同一候选：脚本负责启动、截图和逐字段合成输入，用户只完成出现的验证码；随后继续观察MITM认证路径、gateway/UDP、Cmd19/Cmd13、`7503→36`和首个稳定登录后界面。验证码未人工完成前，不再无效重启游戏，也不把HTTP、进程存活或合成测试提升为真实本地登录通过。

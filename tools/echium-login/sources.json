@@ -26,8 +26,13 @@
     "-build-mode:dll"
   ],
   "modified_source_sha256": {
-    "cfg/cfg.odin": "5694057e9a79cc4011d159cc4c2d9445ab58bf46ed3e06c9ad163f102cc0b975",
-    "patches/apn.odin": "a2063f72b5c59dc3f965342dddfcf8a340f1d819802fd3b2b6dc2063d1ffd0c1"
+    "apn_helper.odin": "efa23db57e08d923662bbcf4c0c6994bd265e5507524b4619ef69ac200f54d13",
+    "cfg/cfg.odin": "5ec51a12a5d7c8325a08511d09f6d137c1ba564bb095eb98c08dcd97e6ce2057",
+    "main.odin": "2a9ad3968d44c15a38a2245f7ed7c78fa0aab92f5f4ffaef687c5671d15a81ab",
+    "patches/apn.odin": "bbfb26cb079c5f7eb802916e6c0a326fd664e2ab9ddb4beb133a77e19ce81c1b",
+    "patches/miu.odin": "d1979c650dcddb566c13a5b8e171fbc0c1e557549935a2ab26c45f69c2de8b79",
+    "patches/url_meta.odin": "cc4627f775b6e37870d445df842b91bce611aefd58c38cde7ac02ff25349b411",
+    "patches/sdk_native.odin": "8fc418d98b8a5eb721fc82402c97f795d15ff457c4f6b34613dffc2c7b2eccc4"
   },
   "observed": {
     "config_fallback_three_state": [
@@ -40,11 +45,47 @@
       0,
       2
     ],
-    "real_http_responses": 21,
+    "sdk_native_binding_three_state": [
+      2,
+      0,
+      2
+    ],
+    "sdk_native_url_callbacks_passed": 20,
+    "sdk_runtime_hooks_ready": [
+      "HOYO_NATIVE",
+      "SDK_FALLBACK"
+    ],
+    "sdk_runtime_url_events_before_captcha": 0,
+    "latest_submit_http_responses": 19,
+    "real_login_by_password_requests": 0,
     "real_gateway_requests": 0,
     "real_udp_events": 0,
-    "game_screenshot_verified": false,
-    "game_click_verified": false,
+    "game_screenshot_verified": true,
+    "game_click_verified": true,
+    "synthetic_fields_verified": true,
+    "captcha_observed": true,
+    "captcha_interacted": false,
+    "observer_cleanup_verified": true,
+    "original_client_hashes_unchanged": true,
+    "system_proxy_and_trust_semantically_unchanged": true,
+    "cef_candidate_runtime_result": "ZFEmbedWeb.dll在目标进程120秒内未加载，候选已从正式补丁撤销，仅保留离线分析证据。",
     "real_local_login_verified": false
-  }
+  },
+  "patch_sha256": "ff5ae6ed8cc20f2cb5ce7aeaf5b5bff9ba21ae8495aff97b6ba8fe94c9f9bfed",
+  "fixed_client_modules": [
+    {
+      "name": "HoYoNetworkSDK.dll",
+      "sha256": "5dab06df8104a9e9a5e85cf049e85f611c2a1600b5e2b0d8f957d6910430d206",
+      "pattern": "E8 ?? ?? ?? ?? 90 80 3D ?? ?? ?? ?? 00 74 ?? 48 8D 54 24 48",
+      "match_rva": "0x310e",
+      "target_rva": "0x1d60"
+    },
+    {
+      "name": "HoYoSDKNetworkFallback.dll",
+      "sha256": "31327b52eeb5dea7ebb49dd095b6f76f4e5429f6c3681450973725b941cd5d96",
+      "pattern": "E8 ?? ?? ?? ?? 90 49 8B D6 48 85 DB 48 0F 45 D3 48 89 75 88",
+      "match_rva": "0x8a41",
+      "target_rva": "0xc630"
+    }
+  ]
 }

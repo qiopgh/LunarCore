@@ -1,14 +1,215 @@
+diff --git a/apn_helper.odin b/apn_helper.odin
+index 54989f77eed4762b786f3abed54e7be6acf3620f..7052faacd53c445ee5a6b6977e86d5b1019a99bb 100644
+--- a/apn_helper.odin
++++ b/apn_helper.odin
+@@ -13,0 +14,5 @@ find_or_load_apn :: proc() -> (scan.Module_Info, bool) {
++    return find_or_load_plugin(APN_DLL, APN_DLL_LOC)
++}
++
++// 沿用原APN加载与有界等待逻辑，仅把插件身份作为参数传入。
++find_or_load_plugin :: proc(name: cstring16, location: string) -> (scan.Module_Info, bool) {
+@@ -15,2 +20,2 @@ find_or_load_apn :: proc() -> (scan.Module_Info, bool) {
+-        if m, ok := scan.module_info_from_name(APN_DLL); ok {
+-            log.debug("game loaded apn.dll")
++        if m, ok := scan.module_info_from_name(name); ok {
++            log.debugf("游戏已加载插件：%s", name)
+@@ -19 +24 @@ find_or_load_apn :: proc() -> (scan.Module_Info, bool) {
+-        log.debug("cant find apn.dll, retrying in 100ms")
++        log.debugf("等待插件加载，100ms后重试：%s", name)
+@@ -23,3 +28,3 @@ find_or_load_apn :: proc() -> (scan.Module_Info, bool) {
+-    if _, lok := dynlib.load_library(APN_DLL_LOC); lok {
+-        if m, sok := scan.module_info_from_name(APN_DLL); sok {
+-            log.debug("self loaded apn.dll")
++    if _, lok := dynlib.load_library(location); lok {
++        if m, sok := scan.module_info_from_name(name); sok {
++            log.debugf("通过原加载入口载入插件：%s", name)
+diff --git a/cfg/cfg.odin b/cfg/cfg.odin
+index a9b1491d255cbf7a58cbd7e86c75b792a5487e8a..7f05df273a77874220d45258bd8b88b56d8cff38 100644
 --- a/cfg/cfg.odin
 +++ b/cfg/cfg.odin
-@@ -31,3 +31,3 @@
+@@ -22,0 +23,2 @@ Config :: struct {
++	hoyo_network_alloc_pat:    []u16,
++	sdk_fallback_alloc_pat:    []u16,
+@@ -31,3 +33,3 @@ cfg := Config {
 -	patch_rsa                 = true,
 -	patch_censorship          = true,
 -	sdk_url                   = "http://127.0.0.1:21000",
 +	patch_rsa                 = false,
 +	patch_censorship          = false,
 +	sdk_url                   = "http://127.0.0.1:21001",
+@@ -37,0 +40,2 @@ cfg := Config {
++	hoyo_network_alloc_pat    = {232, UNK, UNK, UNK, UNK, 144, 128, 61, UNK, UNK, UNK, UNK, 0, 116, UNK, 72, 141, 84, 36, 72},
++	sdk_fallback_alloc_pat    = {232, UNK, UNK, UNK, UNK, 144, 73, 139, 214, 72, 133, 219, 72, 15, 69, 211, 72, 137, 117, 136},
+diff --git a/main.odin b/main.odin
+index 6d8af6683e1f0b8d1d76185ffca43ea31e7d315b..f693d5a33a3aa72193fe6fb6231b773b832cba9d 100644
+--- a/main.odin
++++ b/main.odin
+@@ -70,0 +71,13 @@ mod_thread :: proc () {
++	if cfg.cfg.redirect_http {
++		if module, module_ok := find_or_load_plugin("HoYoNetworkSDK.dll", "./StarRail_Data/Plugins/x86_64/HoYoNetworkSDK.dll"); module_ok {
++			applied += 1 if patches.install_hoyo_network_alloc(module) else 0
++		} else {
++			log.error("SDK_URL_ASSIGN_LOAD_FAILED source=HOYO_NATIVE")
++		}
++		if module, module_ok := find_or_load_plugin("HoYoSDKNetworkFallback.dll", "./StarRail_Data/Plugins/x86_64/HoYoSDKNetworkFallback.dll"); module_ok {
++			applied += 1 if patches.install_sdk_fallback_alloc(module) else 0
++		} else {
++			log.error("SDK_URL_ASSIGN_LOAD_FAILED source=SDK_FALLBACK")
++		}
++	}
++
+diff --git a/patches/apn.odin b/patches/apn.odin
+index 304c2b3b78465fd6cf7370ea2732931beb975313..7dd98f97260ca7def0dea9103f9fb3e5a7984f46 100644
 --- a/patches/apn.odin
 +++ b/patches/apn.odin
-@@ -51 +51 @@
+@@ -48,0 +49 @@ patched_apn_alloc :: proc "c" (
++		log_url_metadata("APN", s)
+@@ -51 +52 @@ patched_apn_alloc :: proc "c" (
 -			strings.contains(s, ".mihoyo.com") {
 +			(strings.contains(s, ".mihoyo.com") || strings.contains(s, ".hoyoverse.com")) {
+diff --git a/patches/miu.odin b/patches/miu.odin
+index a0ae9ce63764fac7f9bffd13b56cae83b104a36d..b104c368258a54bef2a695294d8e60b8621e1b93 100644
+--- a/patches/miu.odin
++++ b/patches/miu.odin
+@@ -57,0 +58 @@ patched_miu :: proc "c" (
++	log_url_metadata("UNITY", url)
+diff --git a/patches/sdk_native.odin b/patches/sdk_native.odin
+new file mode 100644
+index 0000000000000000000000000000000000000000..b73d862716c9a6ae91775fdf1b864c420b45e375
+--- /dev/null
++++ b/patches/sdk_native.odin
+@@ -0,0 +1,92 @@
++package patches
++
++import "base:runtime"
++import "core:log"
++import "core:strings"
++import "shared:il2cure/e9c2da9/hook"
++import "shared:il2cure/e9c2da9/scan"
++import "../cfg"
++
++orig_hoyo_network_alloc: Apn_Alloc_Proc
++orig_sdk_fallback_alloc: Apn_Alloc_Proc
++
++sdk_native_host_allowed :: proc(host: string) -> bool {
++	domains := []string {"hoyoverse.com", "mihoyo.com", "bhsr.com", "starrails.com"}
++	for domain in domains {
++		if strings.equal_fold(host, domain) {
++			return true
++		}
++		if len(host) > len(domain) && host[len(host)-len(domain)-1] == '.' &&
++		   strings.equal_fold(host[len(host)-len(domain):], domain) {
++			return true
++		}
++	}
++	return false
++}
++
++// 只替换服务域名的authority，保留路径、查询和片段的原始字节。
++sdk_native_target :: proc (url: string) -> (target: string, allocated: bool) {
++	if !cfg.cfg.redirect_http { return url, false }
++	start := 0
++	if len(url) >= 8 && strings.equal_fold(url[:8], "https://") { start = 8 }
++	else if len(url) >= 7 && strings.equal_fold(url[:7], "http://") { start = 7 }
++	else { return url, false }
++	end := len(url)
++	for i in start..<len(url) {
++		if url[i] == '/' || url[i] == '?' || url[i] == '#' { end = i; break }
++	}
++	host := url[start:end]
++	if strings.contains(host, "@") { return url, false }
++	if colon := strings.index(host, ":"); colon >= 0 { host = host[:colon] }
++	if !sdk_native_host_allowed(host) {
++		return url, false
++	}
++	if end == len(url) { return cfg.cfg.sdk_url, false }
++	return strings.concatenate({cfg.cfg.sdk_url, url[end:]}, context.temp_allocator), true
++}
++
++// 复用原字符串赋值接口；目标函数会在返回前复制字节，不保留临时指针。
++sdk_native_assign :: proc (original: Apn_Alloc_Proc, source: string, rcx, rdx, r8, r9: rawptr) -> rawptr {
++	if rdx != nil {
++		value := string((cast([^]u8)(rdx))[:int(uintptr(r8))])
++		log_url_metadata(source, value)
++		url, allocated := sdk_native_target(value)
++		if allocated { defer delete(url, context.temp_allocator) }
++		if url != value {
++			log.infof("SDK_URL_ASSIGN_REDIRECT source=%s", source)
++			return original(rcx, raw_data(url), rawptr(uintptr(len(url))), r9)
++		}
++	}
++	return original(rcx, rdx, r8, r9)
++}
++
++patched_hoyo_network_alloc :: proc "c" (rcx, rdx, r8, r9: rawptr) -> rawptr {
++	context = runtime.default_context()
++	context.logger = detour_logger
++	return sdk_native_assign(orig_hoyo_network_alloc, "HOYO_NATIVE", rcx, rdx, r8, r9)
++}
++
++patched_sdk_fallback_alloc :: proc "c" (rcx, rdx, r8, r9: rawptr) -> rawptr {
++	context = runtime.default_context()
++	context.logger = detour_logger
++	return sdk_native_assign(orig_sdk_fallback_alloc, "SDK_FALLBACK", rcx, rdx, r8, r9)
++}
++
++install_sdk_string_alloc :: proc (module: scan.Module_Info, pattern: []u16, replacement: rawptr, original: ^Apn_Alloc_Proc, source: string) -> bool {
++	if !cfg.cfg.redirect_http { return false }
++	target := resolve_target(module, pattern)
++	if target == 0 { log.errorf("SDK_URL_ASSIGN_PATTERN_MISSING source=%s", source); return false }
++	tramp, ok := hook.hook_inline_address(target, replacement)
++	if !ok { log.errorf("SDK_URL_ASSIGN_HOOK_FAILED source=%s", source); return false }
++	original^ = cast(Apn_Alloc_Proc)tramp
++	log.infof("SDK_URL_ASSIGN_READY source=%s", source)
++	return true
++}
++
++install_hoyo_network_alloc :: proc (module: scan.Module_Info) -> bool {
++	return install_sdk_string_alloc(module, cfg.cfg.hoyo_network_alloc_pat, rawptr(patched_hoyo_network_alloc), &orig_hoyo_network_alloc, "HOYO_NATIVE")
++}
++
++install_sdk_fallback_alloc :: proc (module: scan.Module_Info) -> bool {
++	return install_sdk_string_alloc(module, cfg.cfg.sdk_fallback_alloc_pat, rawptr(patched_sdk_fallback_alloc), &orig_sdk_fallback_alloc, "SDK_FALLBACK")
++}
+diff --git a/patches/url_meta.odin b/patches/url_meta.odin
+new file mode 100644
+index 0000000000000000000000000000000000000000..4ba7de63e8b69f39f4ddc50a6b1c06bd72417db1
+--- /dev/null
++++ b/patches/url_meta.odin
+@@ -0,0 +1,36 @@
++package patches
++
++import "core:log"
++import "core:strings"
++
++// 仅记录URL来源、scheme和主机；不记录路径、查询、片段或用户信息。
++log_url_metadata :: proc (source, url: string) {
++
++	scheme_len := 0
++	if strings.has_prefix(url, "https://") {
++		scheme_len = 5
++	} else if strings.has_prefix(url, "http://") {
++		scheme_len = 4
++	} else {
++		return
++	}
++	rest := url[scheme_len + 3:]
++	end := len(rest)
++	for i in 0..<len(rest) {
++		if rest[i] == '/' || rest[i] == '?' || rest[i] == '#' {
++			end = i
++			break
++		}
++	}
++	host := rest[:end]
++	safe := len(host) > 0
++	for ch in host {
++		if !((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') ||
++		     (ch >= '0' && ch <= '9') || ch == '.' || ch == '-' || ch == '_' ||
++		     ch == ':' || ch == '[' || ch == ']') {
++			safe = false
++		}
++	}
++	if !safe { host = "REDACTED" }
++	log.infof("SDK_URL_META source=%s scheme=%s host=%s", source, url[:scheme_len], host)
++}

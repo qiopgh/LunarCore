@@ -1,0 +1,28 @@
+[
+  {
+    "name": "HoYoNetworkSDK.dll",
+    "relative_path": "StarRail_Data/Plugins/x86_64/HoYoNetworkSDK.dll",
+    "sha256": "5dab06df8104a9e9a5e85cf049e85f611c2a1600b5e2b0d8f957d6910430d206",
+    "pattern": "E8 ?? ?? ?? ?? 90 80 3D ?? ?? ?? ?? 00 74 ?? 48 8D 54 24 48",
+    "match_rva": "0x310e",
+    "constructor_rva": "0x1d60",
+    "pointer_register": "RDX",
+    "byte_length_register": "R8",
+    "destination_register": "RCX",
+    "sink_option": "0x2712",
+    "runtime_verified": false
+  },
+  {
+    "name": "HoYoSDKNetworkFallback.dll",
+    "relative_path": "StarRail_Data/Plugins/x86_64/HoYoSDKNetworkFallback.dll",
+    "sha256": "31327b52eeb5dea7ebb49dd095b6f76f4e5429f6c3681450973725b941cd5d96",
+    "pattern": "E8 ?? ?? ?? ?? 90 49 8B D6 48 85 DB 48 0F 45 D3 48 89 75 88",
+    "match_rva": "0x8a41",
+    "constructor_rva": "0xc630",
+    "pointer_register": "RDX",
+    "byte_length_register": "R8",
+    "destination_register": "RCX",
+    "sink_option": "0x2712",
+    "runtime_verified": false
+  }
+]
