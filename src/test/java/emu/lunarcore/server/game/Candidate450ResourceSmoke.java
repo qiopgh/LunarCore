@@ -34,7 +34,8 @@ public final class Candidate450ResourceSmoke {
     private static int passed;
 
     public static void main(String[] args) throws Exception {
-        if (args.length != 1) throw new IllegalArgumentException("需要已有资源目录参数");
+        boolean loginOnly = args.length == 2 && "--login-only".equals(args[1]);
+        if (args.length != 1 && !loginOnly) throw new IllegalArgumentException("需要已有资源目录参数，可附加 --login-only");
         Config config = LunarCore.getConfig();
         config.resourceDir = Path.of(args[0]).toAbsolutePath().toString();
         config.dataDir = Path.of("data").toAbsolutePath().toString();
@@ -53,8 +54,10 @@ public final class Candidate450ResourceSmoke {
         java.nio.file.Files.writeString(Path.of(config.dataDir, "Banners.json"), "[]\n");
         require(GameData.getAvatarExcelMap().get(8001) != null, "固定角色资源 8001");
         require(GameData.getFloorInfo(20001, 20001001) != null, "原初始场景资源");
-        var cocoon = GameData.getCocoonExcelMap().get(1201, 0);
-        require(cocoon != null && GameData.getStageExcelMap().get(1043010) != null, "固定茧 1201 与阶段 1043010");
+        if (!loginOnly) {
+            var cocoon = GameData.getCocoonExcelMap().get(1201, 0);
+            require(cocoon != null && GameData.getStageExcelMap().get(1043010) != null, "固定茧 1201 与阶段 1043010");
+        }
         MongoServer mongo = new MongoServer(new MemoryBackend());
         DatabaseManager database = null;
         HttpServer http = null;
@@ -72,6 +75,7 @@ public final class Candidate450ResourceSmoke {
             Account account = new Account("candidate450_fixture");
             account.save();
             config.candidate450.localAccountUid = account.getUid();
+            if (loginOnly) config.loginOptions.accountName = account.getUsername();
             config.validate();
             http = new HttpServer(LunarCore.ServerType.BOTH);
             set("httpServer", http);
@@ -81,7 +85,8 @@ public final class Candidate450ResourceSmoke {
             // 显式覆盖测试类路径里的同编号假处理器，确保本测试运行生产业务。
             server.getPacketHandler().registerPacketHandler(HandlerPlayerGetTokenCsReq.class);
             server.getPacketHandler().registerPacketHandler(HandlerPlayerLoginCsReq.class);
-            server.getPacketHandler().registerPacketHandler(HandlerStartCocoonStageCsReq.class);
+            if (loginOnly) server.getPacketHandler().registerPacketHandler(HandlerPlayerLoginFinishCsReq.class);
+            else server.getPacketHandler().registerPacketHandler(HandlerStartCocoonStageCsReq.class);
             RegionInfo region = new RegionInfo(server);
             region.setUp(true);
             region.save();
@@ -91,9 +96,34 @@ public final class Candidate450ResourceSmoke {
                 require(dispatch.getAsJsonArray("regionList").size() == 1, "原 dispatch 真实回环 HTTP 响应");
                 JsonObject gateway = http(client, http, "/query_gateway", "GateServer");
                 require(gateway.get("ip").getAsString().equals("127.0.0.1") && !gateway.get("useTcp").getAsBoolean(), "原 gateway 真实回环 HTTP 响应");
+                if (loginOnly) {
+                    JsonObject credentials = JsonParser.parseString("{\"account\":\"candidate450_fixture\",\"password\":\"SYNTHETIC\",\"is_crypto\":false}").getAsJsonObject();
+                    JsonObject sdk = post(client, http, "/hkrpg_global/mdk/shield/api/login", credentials);
+                    JsonObject app = post(client, http, "/hkrpg_global/account/ma-passport/api/appLoginByPassword", credentials);
+                    require(sdk.get("retcode").getAsInt() == 0 && app.get("retcode").getAsInt() == 0, "两条 SDK 路径接受隔离明文测试输入");
+                    require(sdk.getAsJsonObject("data").getAsJsonObject("account").get("uid").getAsString().equals(account.getUid())
+                            && app.getAsJsonObject("data").getAsJsonObject("user_info").get("aid").getAsString().equals(account.getUid()), "SDK、AppLogin 与候选会话绑定同一本地账号");
+                }
             }
             session = new RecordingSession(server);
             login(session);
+            if (loginOnly) {
+                JsonObject finish = session.request("PlayerLoginFinishCsReq", "{}", "PlayerLoginFinishScRsp");
+                require(!finish.has("retcode") || finish.get("retcode").getAsInt() == 0, "原 LoginFinish 完成响应");
+                List<Integer> commands = session.sent.stream().map(raw -> Short.toUnsignedInt(ByteBuffer.wrap(raw).getShort(4))).toList();
+                require(commands.equals(List.of(7503, 36)), "真实资源路径先同步内容再响应登录完成");
+                JsonObject content = session.response("ContentPackageSyncDataScNotify").getAsJsonObject("data");
+                int count = content.getAsJsonArray("contentPackageList").size();
+                require(count > 0 && count == GameData.getContentPackageExcelMap().size(), "内容同步覆盖已加载的真实内容资源");
+                require(session.requested.equals(List.of("PlayerGetTokenCsReq", "PlayerLoginCsReq", "PlayerLoginFinishCsReq")), "仅执行三项登录请求，不运行战斗链");
+                require(session.getState() == SessionState.ACTIVE && session.getPlayer().getScene() != null, "原登录内部初始状态已建立，不视为客户端画面证据");
+                session.onDisconnect();
+                require(server.getPlayerCount() == 0, "登录预检结束后按原路径断开并注销测试玩家");
+                System.out.println("LOGIN_REQUESTS=" + session.requested + " LOGIN_FINISH_SENT=" + commands + " CONTENT_COUNT=" + count);
+                System.out.println("CANDIDATE450_LOGIN_RESOURCE_TESTS_PASSED=" + passed);
+                System.out.println("BOUNDARY=仅登录的回环 HTTP 与原业务合成链；无 KCP 监听、无游戏客户端、无正式加密认证或战斗验收");
+                return;
+            }
             int uid = session.getPlayer().getUid();
             require(session.getPlayer().getScene() != null, "原登录处理器创建场景");
             JsonObject avatars = session.request("GetAvatarDataCsReq", "{}", "GetAvatarDataScRsp");
@@ -166,6 +196,13 @@ public final class Candidate450ResourceSmoke {
         message.mergeFrom(ProtoSource.newInstance(Base64.getDecoder().decode(response.body())));
         return Release450Candidate.json(message);
     }
+    private static JsonObject post(HttpClient client, HttpServer http, String route, JsonObject body) throws Exception {
+        URI uri = URI.create("http://127.0.0.1:" + http.getApp().port() + route);
+        var response = client.send(HttpRequest.newBuilder(uri).header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(body.toString())).build(), HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() != 200) throw new AssertionError("回环 SDK HTTP 状态：" + response.statusCode());
+        return JsonParser.parseString(response.body()).getAsJsonObject();
+    }
     private static void set(String name, Object value) throws Exception {
         var field = LunarCore.class.getDeclaredField(name); field.setAccessible(true); field.set(null, value);
     }
@@ -178,14 +215,19 @@ public final class Candidate450ResourceSmoke {
     }
     private static final class RecordingSession extends GameSession {
         final List<byte[]> sent = new ArrayList<>();
+        final List<String> requested = new ArrayList<>();
         RecordingSession(GameServer server) { super(server); }
         @Override public InetSocketAddress getAddress() { return new InetSocketAddress("127.0.0.1", 1); }
         @Override public void send(byte[] frame) { sent.add(frame.clone()); }
         JsonObject request(String type, String body, String response) throws Exception {
+            requested.add(type);
             sent.clear();
             byte[] frame = Release450Candidate.packet(type, JsonParser.parseString(body).getAsJsonObject()).build();
             var buffer = Unpooled.wrappedBuffer(frame);
             try { onMessage(buffer); } finally { buffer.release(); }
+            return response(response);
+        }
+        JsonObject response(String response) throws Exception {
             for (byte[] raw : sent) {
                 ByteBuffer out = ByteBuffer.wrap(raw);
                 if (out.getInt() != BasePacket.HEADER_CONST) throw new AssertionError("响应包头");

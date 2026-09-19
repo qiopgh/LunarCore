@@ -313,5 +313,10 @@ tasks.register('candidate450ResourceSmoke', JavaExec) {
         def resources = providers.gradleProperty('candidate450Resources').orNull
         if (!resources) throw new GradleException('需要 -Pcandidate450Resources 指定已有资源；不自动下载资源')
         args file(resources).absolutePath
+        def loginOnly = providers.gradleProperty('candidate450LoginOnly').orNull
+        if (loginOnly != null && loginOnly != 'true' && loginOnly != 'false') {
+            throw new GradleException('candidate450LoginOnly 只接受 true 或 false')
+        }
+        if (loginOnly == 'true') args '--login-only'
     }
 }
