@@ -1,22 +1,34 @@
 diff --git a/apn_helper.odin b/apn_helper.odin
-index 54989f77eed4762b786f3abed54e7be6acf3620f..7052faacd53c445ee5a6b6977e86d5b1019a99bb 100644
+index 54989f7..6afaa2d 100644
 --- a/apn_helper.odin
 +++ b/apn_helper.odin
-@@ -13,0 +14,5 @@ find_or_load_apn :: proc() -> (scan.Module_Info, bool) {
-+    return find_or_load_plugin(APN_DLL, APN_DLL_LOC)
+@@ -13,0 +14,17 @@ find_or_load_apn :: proc() -> (scan.Module_Info, bool) {
++    if m, ok := scan.module_info_from_name(APN_DLL); ok {
++        log.debug("游戏已加载插件：AccountPlatNative.dll")
++        return m, true
++    }
++
++    if _, lok := dynlib.load_library(APN_DLL_LOC); lok {
++        if m, sok := scan.module_info_from_name(APN_DLL); sok {
++            log.debug("通过原加载入口载入插件：AccountPlatNative.dll")
++            return m, true
++        }
++    }
++
++    return {}, false
 +}
 +
 +// 沿用原APN加载与有界等待逻辑，仅把插件身份作为参数传入。
 +find_or_load_plugin :: proc(name: cstring16, location: string) -> (scan.Module_Info, bool) {
-@@ -15,2 +20,2 @@ find_or_load_apn :: proc() -> (scan.Module_Info, bool) {
+@@ -15,2 +32,2 @@ find_or_load_apn :: proc() -> (scan.Module_Info, bool) {
 -        if m, ok := scan.module_info_from_name(APN_DLL); ok {
 -            log.debug("game loaded apn.dll")
 +        if m, ok := scan.module_info_from_name(name); ok {
 +            log.debugf("游戏已加载插件：%s", name)
-@@ -19 +24 @@ find_or_load_apn :: proc() -> (scan.Module_Info, bool) {
+@@ -19 +36 @@ find_or_load_apn :: proc() -> (scan.Module_Info, bool) {
 -        log.debug("cant find apn.dll, retrying in 100ms")
 +        log.debugf("等待插件加载，100ms后重试：%s", name)
-@@ -23,3 +28,3 @@ find_or_load_apn :: proc() -> (scan.Module_Info, bool) {
+@@ -23,3 +40,3 @@ find_or_load_apn :: proc() -> (scan.Module_Info, bool) {
 -    if _, lok := dynlib.load_library(APN_DLL_LOC); lok {
 -        if m, sok := scan.module_info_from_name(APN_DLL); sok {
 -            log.debug("self loaded apn.dll")
@@ -24,7 +36,7 @@ index 54989f77eed4762b786f3abed54e7be6acf3620f..7052faacd53c445ee5a6b6977e86d5b1
 +        if m, sok := scan.module_info_from_name(name); sok {
 +            log.debugf("通过原加载入口载入插件：%s", name)
 diff --git a/cfg/cfg.odin b/cfg/cfg.odin
-index a9b1491d255cbf7a58cbd7e86c75b792a5487e8a..7f05df273a77874220d45258bd8b88b56d8cff38 100644
+index a9b1491..7f05df2 100644
 --- a/cfg/cfg.odin
 +++ b/cfg/cfg.odin
 @@ -22,0 +23,2 @@ Config :: struct {
@@ -41,10 +53,30 @@ index a9b1491d255cbf7a58cbd7e86c75b792a5487e8a..7f05df273a77874220d45258bd8b88b5
 +	hoyo_network_alloc_pat    = {232, UNK, UNK, UNK, UNK, 144, 128, 61, UNK, UNK, UNK, UNK, 0, 116, UNK, 72, 141, 84, 36, 72},
 +	sdk_fallback_alloc_pat    = {232, UNK, UNK, UNK, UNK, 144, 73, 139, 214, 72, 133, 219, 72, 15, 69, 211, 72, 137, 117, 136},
 diff --git a/main.odin b/main.odin
-index 6d8af6683e1f0b8d1d76185ffca43ea31e7d315b..f693d5a33a3aa72193fe6fb6231b773b832cba9d 100644
+index 6d8af66..c56c971 100644
 --- a/main.odin
 +++ b/main.odin
-@@ -70,0 +71,13 @@ mod_thread :: proc () {
+@@ -34,0 +35,10 @@ mod_thread :: proc () {
++	applied := 0
++	if apn, aok := find_or_load_apn(); aok {
++		patches.apn = apn
++		applied += 1 if patches.install_apn_alloc() else 0
++	} else {
++		log.error("failed to get apn?")
++		extra.exit_if_ctrl_c()
++		return
++	}
++
+@@ -55 +64,0 @@ mod_thread :: proc () {
+-	applied := 0
+@@ -62,7 +71,11 @@ mod_thread :: proc () {
+-	if apn, aok := find_or_load_apn(); aok {
+-		patches.apn = apn
+-		applied += 1 if patches.install_apn_alloc() else 0
+-	} else {
+-		log.error("failed to get apn?")
+-		extra.exit_if_ctrl_c()
+-		return
 +	if cfg.cfg.redirect_http {
 +		if module, module_ok := find_or_load_plugin("HoYoNetworkSDK.dll", "./StarRail_Data/Plugins/x86_64/HoYoNetworkSDK.dll"); module_ok {
 +			applied += 1 if patches.install_hoyo_network_alloc(module) else 0
@@ -56,10 +88,8 @@ index 6d8af6683e1f0b8d1d76185ffca43ea31e7d315b..f693d5a33a3aa72193fe6fb6231b773b
 +		} else {
 +			log.error("SDK_URL_ASSIGN_LOAD_FAILED source=SDK_FALLBACK")
 +		}
-+	}
-+
 diff --git a/patches/apn.odin b/patches/apn.odin
-index 304c2b3b78465fd6cf7370ea2732931beb975313..7dd98f97260ca7def0dea9103f9fb3e5a7984f46 100644
+index 304c2b3..7dd98f9 100644
 --- a/patches/apn.odin
 +++ b/patches/apn.odin
 @@ -48,0 +49 @@ patched_apn_alloc :: proc "c" (
@@ -68,14 +98,14 @@ index 304c2b3b78465fd6cf7370ea2732931beb975313..7dd98f97260ca7def0dea9103f9fb3e5
 -			strings.contains(s, ".mihoyo.com") {
 +			(strings.contains(s, ".mihoyo.com") || strings.contains(s, ".hoyoverse.com")) {
 diff --git a/patches/miu.odin b/patches/miu.odin
-index a0ae9ce63764fac7f9bffd13b56cae83b104a36d..b104c368258a54bef2a695294d8e60b8621e1b93 100644
+index a0ae9ce..b104c36 100644
 --- a/patches/miu.odin
 +++ b/patches/miu.odin
 @@ -57,0 +58 @@ patched_miu :: proc "c" (
 +	log_url_metadata("UNITY", url)
 diff --git a/patches/sdk_native.odin b/patches/sdk_native.odin
 new file mode 100644
-index 0000000000000000000000000000000000000000..b73d862716c9a6ae91775fdf1b864c420b45e375
+index 0000000..b73d862
 --- /dev/null
 +++ b/patches/sdk_native.odin
 @@ -0,0 +1,92 @@
@@ -173,7 +203,7 @@ index 0000000000000000000000000000000000000000..b73d862716c9a6ae91775fdf1b864c42
 +}
 diff --git a/patches/url_meta.odin b/patches/url_meta.odin
 new file mode 100644
-index 0000000000000000000000000000000000000000..4ba7de63e8b69f39f4ddc50a6b1c06bd72417db1
+index 0000000..4ba7de6
 --- /dev/null
 +++ b/patches/url_meta.odin
 @@ -0,0 +1,36 @@

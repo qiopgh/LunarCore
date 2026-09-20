@@ -110,6 +110,8 @@ python tools/echium-login/run_sdk_native_check.py `
 
 该提交窗口经MITM观察到19条HTTP响应元数据，但`loginByPassword`、`/account/risky/api/check`、gateway和UDP事件均为0。曾离线定位`ZFEmbedWeb.dll`的CEF请求回调并构建受限路径候选，但在目标StarRail进程中等待120秒仍未加载该模块，也没有对应子进程；该错误路线已从正式补丁撤销，仅保留私有分析证据。没有通过修改`disable_mmt`或其他风险配置制造通过。
 
-每个窗口结束后，观察器均完成hook卸载、session detach和RPC线程停止，客户端正常退出0；临时DLL、配置和日志撤回，服务端沿原`stop`退出1000，MITM退出0，五个相关端口释放。固定客户端文件哈希未变；系统代理、代理环境和信任证书快照在规范化JSON后完全相同。
+后续真实窗口确认验证码来自`AccountPlatNative.dll`的生产认证链路：该DLL在全局构造阶段建立`passport_env` URL表，旧sidecar却在等待`GameAssembly`和IL2CPP初始化后才安装APN字符串Hook，因而错过SDK初始化期的URL复制。修正后的接入副本会在等待`GameAssembly`前立即载入并Hook APN；LunarCore仅把现有`AppLoginHandler`复用到`/account/ma-cn-passport/app/loginByPassword`，不新增认证、启动、封包或密码学框架。隔离回归使用合成账号，正式账号和凭据不作为测试输入；真实客户端完成状态仍以MITM观察到该路径并进入本地会话为准。
 
-当前仅登录Goal仍未完成。下一次必须在用户可操作验证码时复用同一候选：脚本负责启动、截图和逐字段合成输入，用户只完成出现的验证码；随后继续观察MITM认证路径、gateway/UDP、Cmd19/Cmd13、`7503→36`和首个稳定登录后界面。验证码未人工完成前，不再无效重启游戏，也不把HTTP、进程存活或合成测试提升为真实本地登录通过。
+此前各个已完成窗口结束后，观察器均完成hook卸载、session detach和RPC线程停止，客户端正常退出0；临时DLL、配置和日志撤回，服务端沿原`stop`退出1000，MITM退出0，五个相关端口释放。固定客户端文件哈希未变；系统代理、代理环境和信任证书快照在规范化JSON后完全相同。
+
+APN提前Hook候选的最新窗口记录到14条本地MITM HTTP响应，Hook安装顺序已成立，但运行会话为远程会话且没有前台窗口，原截图安全门拒绝输入；因此未触发密码登录、gateway或UDP。观察器、客户端、MITM、服务端与端口已清理，系统网络快照相同；本轮sidecar因终端策略阻止删除而保留，未换解释器绕过。当前仅登录Goal仍未完成。下一次只在交互桌面恢复且存在可验证前台窗口后复用同一合成账号，继续观察MITM认证路径、gateway/UDP、Cmd19/Cmd13、`7503→36`和首个稳定登录后界面；不使用正式账号，也不把HTTP、进程存活或合成测试提升为真实本地登录通过。

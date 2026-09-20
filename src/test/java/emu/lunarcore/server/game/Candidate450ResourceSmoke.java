@@ -120,9 +120,11 @@ public final class Candidate450ResourceSmoke {
                     JsonObject credentials = JsonParser.parseString("{\"account\":\"candidate450_fixture\",\"password\":\"SYNTHETIC\",\"is_crypto\":false}").getAsJsonObject();
                     JsonObject sdk = post(client, http, "/hkrpg_global/mdk/shield/api/login", credentials);
                     JsonObject app = post(client, http, "/hkrpg_global/account/ma-passport/api/appLoginByPassword", credentials);
-                    require(sdk.get("retcode").getAsInt() == 0 && app.get("retcode").getAsInt() == 0, "两条 SDK 路径接受隔离明文测试输入");
+                    JsonObject cnApp = post(client, http, "/account/ma-cn-passport/app/loginByPassword", credentials);
+                    require(sdk.get("retcode").getAsInt() == 0 && app.get("retcode").getAsInt() == 0 && cnApp.get("retcode").getAsInt() == 0, "三条 SDK 路径接受隔离明文测试输入");
                     require(sdk.getAsJsonObject("data").getAsJsonObject("account").get("uid").getAsString().equals(account.getUid())
-                            && app.getAsJsonObject("data").getAsJsonObject("user_info").get("aid").getAsString().equals(account.getUid()), "SDK、AppLogin 与候选会话绑定同一本地账号");
+                            && app.getAsJsonObject("data").getAsJsonObject("user_info").get("aid").getAsString().equals(account.getUid())
+                            && cnApp.getAsJsonObject("data").getAsJsonObject("user_info").get("aid").getAsString().equals(account.getUid()), "SDK、两条 AppLogin 与候选会话绑定同一本地账号");
                 }
             }
             if (throughMitm) {

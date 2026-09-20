@@ -26,9 +26,9 @@
     "-build-mode:dll"
   ],
   "modified_source_sha256": {
-    "apn_helper.odin": "efa23db57e08d923662bbcf4c0c6994bd265e5507524b4619ef69ac200f54d13",
+    "apn_helper.odin": "d4ab313be18b395b4968b17e99dccd8438f5f6d73064a956dadfc5b9cf1b0b25",
     "cfg/cfg.odin": "5ec51a12a5d7c8325a08511d09f6d137c1ba564bb095eb98c08dcd97e6ce2057",
-    "main.odin": "2a9ad3968d44c15a38a2245f7ed7c78fa0aab92f5f4ffaef687c5671d15a81ab",
+    "main.odin": "9a7b733c82ffef2bcf3196ca1fb05050f9048742d4b00041ee8193ee5d2641c1",
     "patches/apn.odin": "bbfb26cb079c5f7eb802916e6c0a326fd664e2ab9ddb4beb133a77e19ce81c1b",
     "patches/miu.odin": "d1979c650dcddb566c13a5b8e171fbc0c1e557549935a2ab26c45f69c2de8b79",
     "patches/url_meta.odin": "cc4627f775b6e37870d445df842b91bce611aefd58c38cde7ac02ff25349b411",
@@ -69,9 +69,23 @@
     "original_client_hashes_unchanged": true,
     "system_proxy_and_trust_semantically_unchanged": true,
     "cef_candidate_runtime_result": "ZFEmbedWeb.dll在目标进程120秒内未加载，候选已从正式补丁撤销，仅保留离线分析证据。",
-    "real_local_login_verified": false
+    "real_local_login_verified": false,
+    "apn_install_order_three_state": [
+      2,
+      0,
+      2
+    ],
+    "apn_hook_installed_before_gameassembly": true,
+    "cn_password_route_regression_passed": true,
+    "early_window_http_responses": 14,
+    "early_window_login_by_password_requests": 0,
+    "early_window_gateway_requests": 0,
+    "early_window_udp_events": 0,
+    "early_window_all_http_through_local_mitm": true,
+    "early_window_input_blocked": "remote_session且无前台窗口，未发送字段或点击",
+    "sidecars_removed_after_latest_window": false
   },
-  "patch_sha256": "ff5ae6ed8cc20f2cb5ce7aeaf5b5bff9ba21ae8495aff97b6ba8fe94c9f9bfed",
+  "patch_sha256": "26af05476ec811b9b521ba2126165895c08b01b5cdc7c7c5221fb0634f2964b4",
   "fixed_client_modules": [
     {
       "name": "HoYoNetworkSDK.dll",

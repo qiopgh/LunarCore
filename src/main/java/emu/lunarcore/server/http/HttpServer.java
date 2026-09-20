@@ -161,6 +161,7 @@ public class HttpServer {
         
         // Username & Password login (from client). Returns a session key to the client.
         getApp().post("/hkrpg_global/account/ma-passport/api/appLoginByPassword", new AppLoginHandler());
+        getApp().post("/account/ma-cn-passport/app/loginByPassword", new AppLoginHandler());
         getApp().post("/hkrpg_global/account/ma-passport/token/verifySToken", new HttpJsonResponse("{}"));
         
         // Config

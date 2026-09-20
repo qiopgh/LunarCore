@@ -30,6 +30,22 @@ def main() -> int:
         print(f"SDK_NATIVE_ADAPTER_ABSENT MISSING={','.join(missing)}")
         return 2
 
+    main_text = (args.source / "main.odin").read_text(encoding="utf-8")
+    helper_text = (args.source / "apn_helper.odin").read_text(encoding="utf-8")
+    try:
+        apn_install = main_text.index("patches.install_apn_alloc()")
+        gameassembly_wait = main_text.index("extra.spin_until_ga_load()")
+    except ValueError:
+        print("SDK_NATIVE_APN_ORDER_INVALID REASON=MARKER_MISSING")
+        return 3
+    if apn_install >= gameassembly_wait:
+        print("SDK_NATIVE_APN_ORDER_INVALID REASON=HOOK_AFTER_GAMEASSEMBLY_WAIT")
+        return 3
+    if "dynlib.load_library(APN_DLL_LOC)" not in helper_text or "return find_or_load_plugin(APN_DLL, APN_DLL_LOC)" in helper_text:
+        print("SDK_NATIVE_APN_ORDER_INVALID REASON=APN_NOT_IMMEDIATE")
+        return 3
+    print("SDK_NATIVE_APN_ORDER_OK=true")
+
     verify = subprocess.run(
         [
             sys.executable,
