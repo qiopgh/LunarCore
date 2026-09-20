@@ -8,6 +8,9 @@ from pathlib import Path
 
 
 REQUIRED_MARKERS = (
+    "apn_endpoint_lookup_pat",
+    "install_apn_endpoint_lookup",
+    "APN_ENDPOINT_REDIRECT",
     "hoyo_network_alloc_pat",
     "sdk_fallback_alloc_pat",
     "patched_hoyo_network_alloc",
@@ -44,6 +47,9 @@ def main() -> int:
     if "dynlib.load_library(APN_DLL_LOC)" not in helper_text or "return find_or_load_plugin(APN_DLL, APN_DLL_LOC)" in helper_text:
         print("SDK_NATIVE_APN_ORDER_INVALID REASON=APN_NOT_IMMEDIATE")
         return 3
+    if main_text.index("patches.install_apn_endpoint_lookup()") >= gameassembly_wait:
+        print("SDK_NATIVE_APN_ORDER_INVALID REASON=ENDPOINT_HOOK_AFTER_GAMEASSEMBLY_WAIT")
+        return 3
     print("SDK_NATIVE_APN_ORDER_OK=true")
 
     verify = subprocess.run(
@@ -66,7 +72,16 @@ def main() -> int:
         shutil.rmtree(args.work)
     args.work.mkdir(parents=True)
     shutil.copytree(args.source, args.work / "echium")
+    shutil.copytree(Path(__file__).with_name("apn-check"), args.work / "apn-check")
     shutil.copytree(Path(__file__).with_name("sdk-native-check"), args.work / "sdk-native-check")
+    apn_run = subprocess.run(
+        [str(args.odin), "run", ".", "-vet", "-strict-style", "-o:speed"],
+        cwd=args.work / "apn-check",
+        check=False,
+    )
+    print(f"APN_ENDPOINT_CHECK_EXIT={apn_run.returncode}")
+    if apn_run.returncode != 0:
+        return apn_run.returncode
     sdk_run = subprocess.run(
         [str(args.odin), "run", ".", "-vet", "-strict-style", "-o:speed"],
         cwd=args.work / "sdk-native-check",

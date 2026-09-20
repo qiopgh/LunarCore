@@ -36,40 +36,45 @@ index 54989f7..6afaa2d 100644
 +        if m, sok := scan.module_info_from_name(name); sok {
 +            log.debugf("通过原加载入口载入插件：%s", name)
 diff --git a/cfg/cfg.odin b/cfg/cfg.odin
-index a9b1491..7f05df2 100644
+index a9b1491..d76c079 100644
 --- a/cfg/cfg.odin
 +++ b/cfg/cfg.odin
-@@ -22,0 +23,2 @@ Config :: struct {
+@@ -22,0 +23,3 @@ Config :: struct {
++	apn_endpoint_lookup_pat:   []u16,
 +	hoyo_network_alloc_pat:    []u16,
 +	sdk_fallback_alloc_pat:    []u16,
-@@ -31,3 +33,3 @@ cfg := Config {
+@@ -31,3 +34,3 @@ cfg := Config {
 -	patch_rsa                 = true,
 -	patch_censorship          = true,
 -	sdk_url                   = "http://127.0.0.1:21000",
 +	patch_rsa                 = false,
 +	patch_censorship          = false,
 +	sdk_url                   = "http://127.0.0.1:21001",
-@@ -37,0 +40,2 @@ cfg := Config {
+@@ -37,0 +41,3 @@ cfg := Config {
++	apn_endpoint_lookup_pat   = {64, 83, 85, 86, 87, 65, 84, 65, 86, 65, 87, 72, 131, 236, 80, 72, 139, 5, UNK, UNK, UNK, UNK, 72, 51, 196, 72, 137, 68, 36, 72, 73, 139, 216, 72, 139, 250, 76, 139, 241},
 +	hoyo_network_alloc_pat    = {232, UNK, UNK, UNK, UNK, 144, 128, 61, UNK, UNK, UNK, UNK, 0, 116, UNK, 72, 141, 84, 36, 72},
 +	sdk_fallback_alloc_pat    = {232, UNK, UNK, UNK, UNK, 144, 73, 139, 214, 72, 133, 219, 72, 15, 69, 211, 72, 137, 117, 136},
 diff --git a/main.odin b/main.odin
-index 6d8af66..c56c971 100644
+index 6d8af66..29bc55d 100644
 --- a/main.odin
 +++ b/main.odin
-@@ -34,0 +35,10 @@ mod_thread :: proc () {
+@@ -34,0 +35,13 @@ mod_thread :: proc () {
 +	applied := 0
 +	if apn, aok := find_or_load_apn(); aok {
 +		patches.apn = apn
-+		applied += 1 if patches.install_apn_alloc() else 0
++		if patches.install_apn_alloc() {
++			applied += 1
++			applied += 1 if patches.install_apn_endpoint_lookup() else 0
++		}
 +	} else {
 +		log.error("failed to get apn?")
 +		extra.exit_if_ctrl_c()
 +		return
 +	}
 +
-@@ -55 +64,0 @@ mod_thread :: proc () {
+@@ -55 +67,0 @@ mod_thread :: proc () {
 -	applied := 0
-@@ -62,7 +71,11 @@ mod_thread :: proc () {
+@@ -62,7 +74,11 @@ mod_thread :: proc () {
 -	if apn, aok := find_or_load_apn(); aok {
 -		patches.apn = apn
 -		applied += 1 if patches.install_apn_alloc() else 0
@@ -89,14 +94,102 @@ index 6d8af66..c56c971 100644
 +			log.error("SDK_URL_ASSIGN_LOAD_FAILED source=SDK_FALLBACK")
 +		}
 diff --git a/patches/apn.odin b/patches/apn.odin
-index 304c2b3..7dd98f9 100644
+index 304c2b3..1193a95 100644
 --- a/patches/apn.odin
 +++ b/patches/apn.odin
-@@ -48,0 +49 @@ patched_apn_alloc :: proc "c" (
+@@ -6,0 +7 @@ import "shared:il2cure/e9c2da9/hook"
++import "shared:il2cure/e9c2da9/scan"
+@@ -17,0 +19,14 @@ orig_apn_alloc: Apn_Alloc_Proc
++Apn_Endpoint_Lookup_Proc :: #type proc "c" (
++	rcx: rawptr,
++	rdx: rawptr,
++	r8:  rawptr,
++) -> rawptr
++
++Apn_Std_String :: struct {
++	storage:  [16]u8,
++	size:     uintptr,
++	capacity: uintptr,
++}
++
++orig_apn_endpoint_lookup: Apn_Endpoint_Lookup_Proc
++
+@@ -36,0 +52,54 @@ install_apn_alloc :: proc () -> bool {
++install_apn_endpoint_lookup :: proc () -> bool {
++	target, ok := scan.find_pattern_in_module(apn, cfg.cfg.apn_endpoint_lookup_pat)
++	if !ok {
++		log.error("apn endpoint lookup pattern not found. install failed.")
++		return false
++	}
++
++	tramp, hok := hook.hook_inline_address(target, rawptr(patched_apn_endpoint_lookup))
++	if !hok {
++		log.error("apn endpoint lookup inline hook not ok. install failed.")
++		return false
++	}
++
++	orig_apn_endpoint_lookup = cast(Apn_Endpoint_Lookup_Proc)tramp
++	log.info("APN_ENDPOINT_LOOKUP_READY")
++	return true
++}
++
++apn_std_string_view :: proc (value: rawptr) -> (string, bool) {
++	if value == nil { return "", false }
++	object := cast(^Apn_Std_String)(value)
++	if object.size == 0 { return "", true }
++	if object.size > object.capacity || object.size > 16 * 1024 { return "", false }
++
++	data := rawptr(&object.storage[0])
++	if object.capacity >= 16 {
++		data = (cast(^rawptr)(value))^
++	}
++	if data == nil { return "", false }
++	return string((cast([^]u8)(data))[:int(object.size)]), true
++}
++
++apn_rewrite_endpoint :: proc (output: rawptr, value: string) -> bool {
++	target, allocated := sdk_native_target(value)
++	if allocated { defer delete(target, context.temp_allocator) }
++	if target == value { return false }
++	orig_apn_alloc(output, raw_data(target), rawptr(uintptr(len(target))), nil)
++	return true
++}
++
++patched_apn_endpoint_lookup :: proc "c" (rcx, rdx, r8: rawptr) -> rawptr {
++	context = runtime.default_context()
++	context.logger = detour_logger
++
++	result := orig_apn_endpoint_lookup(rcx, rdx, r8)
++	if value, ok := apn_std_string_view(result); ok {
++		log_url_metadata("APN_ENDPOINT", value)
++		if apn_rewrite_endpoint(result, value) {
++			log.info("APN_ENDPOINT_REDIRECT")
++		}
++	}
++	return result
++}
++
+@@ -48,0 +118 @@ patched_apn_alloc :: proc "c" (
 +		log_url_metadata("APN", s)
-@@ -51 +52 @@ patched_apn_alloc :: proc "c" (
+@@ -50,7 +120,3 @@ patched_apn_alloc :: proc "c" (
+-		if cfg.cfg.redirect_http && strings.has_prefix(s, "https://") &&
 -			strings.contains(s, ".mihoyo.com") {
-+			(strings.contains(s, ".mihoyo.com") || strings.contains(s, ".hoyoverse.com")) {
+-			url_buf := cfg.cfg.sdk_url
+-			if p := path_after_authority(s, 8); p != "" {
+-				url_buf = strings.concatenate({cfg.cfg.sdk_url, p}, context.temp_allocator)
+-			}
+-
++		url_buf, allocated := sdk_native_target(s)
++		if allocated { defer delete(url_buf, context.temp_allocator) }
++		if url_buf != s {
+@@ -58,6 +124 @@ patched_apn_alloc :: proc "c" (
+-			res := orig_apn_alloc(rcx,
+-				raw_data(url_buf), rawptr(uintptr(len(url_buf))), r9)
+-
+-			if url_buf != cfg.cfg.sdk_url {
+-				delete(url_buf, context.temp_allocator)
+-			}
++			res := orig_apn_alloc(rcx, raw_data(url_buf), rawptr(uintptr(len(url_buf))), r9)
 diff --git a/patches/miu.odin b/patches/miu.odin
 index a0ae9ce..b104c36 100644
 --- a/patches/miu.odin

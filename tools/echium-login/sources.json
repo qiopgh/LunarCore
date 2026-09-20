@@ -27,9 +27,9 @@
   ],
   "modified_source_sha256": {
     "apn_helper.odin": "d4ab313be18b395b4968b17e99dccd8438f5f6d73064a956dadfc5b9cf1b0b25",
-    "cfg/cfg.odin": "5ec51a12a5d7c8325a08511d09f6d137c1ba564bb095eb98c08dcd97e6ce2057",
-    "main.odin": "9a7b733c82ffef2bcf3196ca1fb05050f9048742d4b00041ee8193ee5d2641c1",
-    "patches/apn.odin": "bbfb26cb079c5f7eb802916e6c0a326fd664e2ab9ddb4beb133a77e19ce81c1b",
+    "cfg/cfg.odin": "0a5a8b1b43f7f3295dcc5557a3837e3b9d0b3d3f317e8721905e8f99f4108771",
+    "main.odin": "a4e2842953d796567fca9d56ac58a4e76e5de9d444f4190c07819828ce50db34",
+    "patches/apn.odin": "b9d6c21d4fd5675a01dc9f7099ee4e30614d7326206ba4ee028d81af778fe868",
     "patches/miu.odin": "d1979c650dcddb566c13a5b8e171fbc0c1e557549935a2ab26c45f69c2de8b79",
     "patches/url_meta.odin": "cc4627f775b6e37870d445df842b91bce611aefd58c38cde7ac02ff25349b411",
     "patches/sdk_native.odin": "8fc418d98b8a5eb721fc82402c97f795d15ff457c4f6b34613dffc2c7b2eccc4"
@@ -83,9 +83,17 @@
     "early_window_udp_events": 0,
     "early_window_all_http_through_local_mitm": true,
     "early_window_input_blocked": "remote_session且无前台窗口，未发送字段或点击",
-    "sidecars_removed_after_latest_window": false
+    "sidecars_removed_after_latest_window": false,
+    "early_hook_alone_sufficient": false,
+    "early_hook_runtime_apn_url_events": 0,
+    "apn_endpoint_lookup_rva": "0x37aed0",
+    "apn_endpoint_lookup_pattern_matches": 1,
+    "apn_endpoint_lookup_binding_verified": true,
+    "apn_endpoint_rewrite_cases_passed": 3,
+    "apn_endpoint_hook_cases_passed": 3,
+    "apn_endpoint_runtime_verified": false
   },
-  "patch_sha256": "26af05476ec811b9b521ba2126165895c08b01b5cdc7c7c5221fb0634f2964b4",
+  "patch_sha256": "4533ee5364cd52a20884c1e9b3ec19e6ae205f2546956d1b21bbf45f50feed76",
   "fixed_client_modules": [
     {
       "name": "HoYoNetworkSDK.dll",
@@ -100,6 +108,14 @@
       "pattern": "E8 ?? ?? ?? ?? 90 49 8B D6 48 85 DB 48 0F 45 D3 48 89 75 88",
       "match_rva": "0x8a41",
       "target_rva": "0xc630"
+    },
+    {
+      "name": "AccountPlatNative.dll",
+      "sha256": "120145463a1c12c00db04b631a7b863a9eb0df0ccfa8f395e4a8ee96c7dadc57",
+      "pattern": "40 53 55 56 57 41 54 41 56 41 57 48 83 EC 50 48 8B 05 ?? ?? ?? ?? 48 33 C4 48 89 44 24 48 49 8B D8 48 8B FA 4C 8B F1",
+      "match_rva": "0x37aed0",
+      "target_rva": "0x37aed0",
+      "runtime_verified": false
     }
   ]
 }
