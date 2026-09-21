@@ -27,73 +27,52 @@
   ],
   "modified_source_sha256": {
     "apn_helper.odin": "d4ab313be18b395b4968b17e99dccd8438f5f6d73064a956dadfc5b9cf1b0b25",
-    "cfg/cfg.odin": "0a5a8b1b43f7f3295dcc5557a3837e3b9d0b3d3f317e8721905e8f99f4108771",
-    "main.odin": "a4e2842953d796567fca9d56ac58a4e76e5de9d444f4190c07819828ce50db34",
+    "cfg/cfg.odin": "acc85c41435ce4ce7d5a799ca0a7c933fc5d103969eeba2abb7cdf52c3f3e997",
+    "main.odin": "0e66443f21d6cf9731a58f7c59f818c7619616c35f72a7b9c651960045f3cf13",
     "patches/apn.odin": "b9d6c21d4fd5675a01dc9f7099ee4e30614d7326206ba4ee028d81af778fe868",
     "patches/miu.odin": "d1979c650dcddb566c13a5b8e171fbc0c1e557549935a2ab26c45f69c2de8b79",
     "patches/url_meta.odin": "cc4627f775b6e37870d445df842b91bce611aefd58c38cde7ac02ff25349b411",
-    "patches/sdk_native.odin": "8fc418d98b8a5eb721fc82402c97f795d15ff457c4f6b34613dffc2c7b2eccc4"
+    "patches/sdk_native.odin": "8fc418d98b8a5eb721fc82402c97f795d15ff457c4f6b34613dffc2c7b2eccc4",
+    "patches/tls_mitm.odin": "96cc99848c4712909ebebb56bdb84474627adaad3c57c5b2dbf1afdb0416495e"
   },
   "observed": {
-    "config_fallback_three_state": [
-      2,
-      0,
-      2
-    ],
-    "apn_redirect_three_state": [
-      2,
-      0,
-      2
-    ],
-    "sdk_native_binding_three_state": [
-      2,
-      0,
-      2
-    ],
-    "sdk_native_url_callbacks_passed": 20,
-    "sdk_runtime_hooks_ready": [
-      "HOYO_NATIVE",
-      "SDK_FALLBACK"
-    ],
-    "sdk_runtime_url_events_before_captcha": 0,
-    "latest_submit_http_responses": 19,
-    "real_login_by_password_requests": 0,
+    "verification_owner": "designated_specialist",
+    "latest_real_window": "formal-login-hosts-443-tls-25",
+    "real_login_by_password_requests": 1,
+    "real_combo_login_requests": 1,
     "real_gateway_requests": 0,
-    "real_udp_events": 0,
-    "game_screenshot_verified": true,
-    "game_click_verified": true,
-    "synthetic_fields_verified": true,
-    "captcha_observed": true,
-    "captcha_interacted": false,
-    "observer_cleanup_verified": true,
-    "original_client_hashes_unchanged": true,
-    "system_proxy_and_trust_semantically_unchanged": true,
-    "cef_candidate_runtime_result": "ZFEmbedWeb.dll在目标进程120秒内未加载，候选已从正式补丁撤销，仅保留离线分析证据。",
+    "login_finish_observed": false,
     "real_local_login_verified": false,
-    "apn_install_order_three_state": [
-      2,
-      0,
-      2
-    ],
-    "apn_hook_installed_before_gameassembly": true,
-    "cn_password_route_regression_passed": true,
-    "early_window_http_responses": 14,
-    "early_window_login_by_password_requests": 0,
-    "early_window_gateway_requests": 0,
-    "early_window_udp_events": 0,
-    "early_window_all_http_through_local_mitm": true,
-    "early_window_input_blocked": "remote_session且无前台窗口，未发送字段或点击",
-    "sidecars_removed_after_latest_window": false,
-    "early_hook_alone_sufficient": false,
-    "early_hook_runtime_apn_url_events": 0,
-    "apn_endpoint_lookup_rva": "0x37aed0",
-    "apn_endpoint_lookup_pattern_matches": 1,
-    "apn_endpoint_lookup_binding_verified": true,
-    "apn_endpoint_rewrite_cases_passed": 3,
-    "apn_endpoint_hook_cases_passed": 3,
-    "apn_endpoint_runtime_verified": false
+    "user_agreement_accepted": false,
+    "cleanup_verified": true,
+    "system_proxy_and_trust_semantically_unchanged": true,
+    "tls_exact_scope": {
+      "verification_owner": "designated_specialist",
+      "source_symbol": "patches.apn_tls_url_allowed",
+      "native_three_state": [
+        1,
+        0,
+        1
+      ],
+      "exact_host_count": 60,
+      "implicit_https_port": 443,
+      "explicit_allowed_port": 443,
+      "handle_reuse_restores_verification": true,
+      "candidate_deployed_and_loaded": true,
+      "apn_tls_mitm_ready": true,
+      "local_password_request_observed": true,
+      "login_finish_observed": false,
+      "real_local_login_verified": false,
+      "last_observed_blocker": "USER_AGREEMENT_DECISION_REQUIRED",
+      "system_proxy_changed": false,
+      "system_certificates_changed": false,
+      "native_linux_verified": false,
+      "binary_reproducibility_verified": false,
+      "runtime_requires_independent_winhttp_script": true,
+      "native_dll_only_login_verified": false
+    }
   },
-  "patch_sha256": "4533ee5364cd52a20884c1e9b3ec19e6ae205f2546956d1b21bbf45f50feed76",
+  "patch_sha256": "0e4e8659a0567ff62dbc299b9d6733091577c992383e9962243b3258d87e56bc",
   "fixed_client_modules": [
     {
       "name": "HoYoNetworkSDK.dll",
@@ -117,5 +96,83 @@
       "target_rva": "0x37aed0",
       "runtime_verified": false
     }
+  ],
+  "tls_delivery": {
+    "candidate_sha256": "43dcd8a96d9a950f61a467fd608fb6534c5e3afeff943d1c1630ed8321b1194b",
+    "runtime_config_sha256": "4bf9a1c6b516e2c462817bbd8e9891085d5b84dbbbfa4ca552971540a7409cdf",
+    "native_test_sha256": "c0ae17e722be0abb2cea860cf731e817cb3a8c194af1602c47bd05af11c8996b",
+    "template_default_enabled": false,
+    "domain_list_sha256": "ba89f8072e79b32ac5a71e5c83dc8bb0afb7eb7ceddf1bb8d39211c19496b527",
+    "specialist_manifest_sha256": "ba2d19d95937f05e2e970bc361e6a1a565626ed1312a712e1a2c66079e182358",
+    "runtime_observation_file": "local-login-observation.json",
+    "runtime_observation_sha256": "901346bae359e424889e8afd0cc1de3f37201a614d18dbc9508829ceca9b30de",
+    "winhttp_fix_integrated_in_dll": false
+  },
+  "observed_history": [
+    {
+      "boundary": "hosts/TLS 整合前，保留旧窗口的原始计数与反证",
+      "facts": {
+        "config_fallback_three_state": [
+          2,
+          0,
+          2
+        ],
+        "apn_redirect_three_state": [
+          2,
+          0,
+          2
+        ],
+        "sdk_native_binding_three_state": [
+          2,
+          0,
+          2
+        ],
+        "sdk_native_url_callbacks_passed": 20,
+        "sdk_runtime_hooks_ready": [
+          "HOYO_NATIVE",
+          "SDK_FALLBACK"
+        ],
+        "sdk_runtime_url_events_before_captcha": 0,
+        "latest_submit_http_responses": 19,
+        "real_login_by_password_requests": 0,
+        "real_gateway_requests": 0,
+        "real_udp_events": 0,
+        "game_screenshot_verified": true,
+        "game_click_verified": true,
+        "synthetic_fields_verified": true,
+        "captcha_observed": true,
+        "captcha_interacted": false,
+        "observer_cleanup_verified": true,
+        "original_client_hashes_unchanged": true,
+        "system_proxy_and_trust_semantically_unchanged": true,
+        "cef_candidate_runtime_result": "ZFEmbedWeb.dll在目标进程120秒内未加载，候选已从正式补丁撤销，仅保留离线分析证据。",
+        "real_local_login_verified": false,
+        "apn_install_order_three_state": [
+          2,
+          0,
+          2
+        ],
+        "apn_hook_installed_before_gameassembly": true,
+        "cn_password_route_regression_passed": true,
+        "early_window_http_responses": 14,
+        "early_window_login_by_password_requests": 0,
+        "early_window_gateway_requests": 0,
+        "early_window_udp_events": 0,
+        "early_window_all_http_through_local_mitm": true,
+        "early_window_input_blocked": "remote_session且无前台窗口，未发送字段或点击",
+        "sidecars_removed_after_latest_window": false,
+        "early_hook_alone_sufficient": false,
+        "early_hook_runtime_apn_url_events": 0,
+        "apn_endpoint_lookup_rva": "0x37aed0",
+        "apn_endpoint_lookup_pattern_matches": 1,
+        "apn_endpoint_lookup_binding_verified": true,
+        "apn_endpoint_rewrite_cases_passed": 3,
+        "apn_endpoint_hook_cases_passed": 3,
+        "apn_endpoint_runtime_verified": false
+      }
+    }
+  ],
+  "patch_apply_flags": [
+    "--unidiff-zero"
   ]
 }

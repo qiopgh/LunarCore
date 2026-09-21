@@ -1,70 +1,74 @@
-diff --git a/apn_helper.odin b/apn_helper.odin
-index 54989f7..6afaa2d 100644
 --- a/apn_helper.odin
 +++ b/apn_helper.odin
-@@ -13,0 +14,17 @@ find_or_load_apn :: proc() -> (scan.Module_Info, bool) {
+@@ -14,7 +14,3 @@
+-    for _ in 0..<MAX_RETRIES_BEFORE_SELF_LOAD {
+-        if m, ok := scan.module_info_from_name(APN_DLL); ok {
+-            log.debug("game loaded apn.dll")
+-            return m, true
+-        }
+-        log.debug("cant find apn.dll, retrying in 100ms")
+-        time.sleep(100 * time.Millisecond)
 +    if m, ok := scan.module_info_from_name(APN_DLL); ok {
 +        log.debug("游戏已加载插件：AccountPlatNative.dll")
 +        return m, true
+@@ -25 +21 @@
+-            log.debug("self loaded apn.dll")
++            log.debug("通过原加载入口载入插件：AccountPlatNative.dll")
+@@ -31,0 +28,21 @@
++
++// 沿用原APN加载与有界等待逻辑，仅把插件身份作为参数传入。
++find_or_load_plugin :: proc(name: cstring16, location: string) -> (scan.Module_Info, bool) {
++    for _ in 0..<MAX_RETRIES_BEFORE_SELF_LOAD {
++        if m, ok := scan.module_info_from_name(name); ok {
++            log.debugf("游戏已加载插件：%s", name)
++            return m, true
++        }
++        log.debugf("等待插件加载，100ms后重试：%s", name)
++        time.sleep(100 * time.Millisecond)
 +    }
 +
-+    if _, lok := dynlib.load_library(APN_DLL_LOC); lok {
-+        if m, sok := scan.module_info_from_name(APN_DLL); sok {
-+            log.debug("通过原加载入口载入插件：AccountPlatNative.dll")
++    if _, lok := dynlib.load_library(location); lok {
++        if m, sok := scan.module_info_from_name(name); sok {
++            log.debugf("通过原加载入口载入插件：%s", name)
 +            return m, true
 +        }
 +    }
 +
 +    return {}, false
 +}
-+
-+// 沿用原APN加载与有界等待逻辑，仅把插件身份作为参数传入。
-+find_or_load_plugin :: proc(name: cstring16, location: string) -> (scan.Module_Info, bool) {
-@@ -15,2 +32,2 @@ find_or_load_apn :: proc() -> (scan.Module_Info, bool) {
--        if m, ok := scan.module_info_from_name(APN_DLL); ok {
--            log.debug("game loaded apn.dll")
-+        if m, ok := scan.module_info_from_name(name); ok {
-+            log.debugf("游戏已加载插件：%s", name)
-@@ -19 +36 @@ find_or_load_apn :: proc() -> (scan.Module_Info, bool) {
--        log.debug("cant find apn.dll, retrying in 100ms")
-+        log.debugf("等待插件加载，100ms后重试：%s", name)
-@@ -23,3 +40,3 @@ find_or_load_apn :: proc() -> (scan.Module_Info, bool) {
--    if _, lok := dynlib.load_library(APN_DLL_LOC); lok {
--        if m, sok := scan.module_info_from_name(APN_DLL); sok {
--            log.debug("self loaded apn.dll")
-+    if _, lok := dynlib.load_library(location); lok {
-+        if m, sok := scan.module_info_from_name(name); sok {
-+            log.debugf("通过原加载入口载入插件：%s", name)
-diff --git a/cfg/cfg.odin b/cfg/cfg.odin
-index a9b1491..d76c079 100644
 --- a/cfg/cfg.odin
 +++ b/cfg/cfg.odin
-@@ -22,0 +23,3 @@ Config :: struct {
+@@ -17,0 +18,2 @@
++	local_tls_mitm:            bool,
++	tls_mitm_hosts:            []string,
+@@ -22,0 +25,4 @@
 +	apn_endpoint_lookup_pat:   []u16,
++	apn_curl_vsetopt_pat:      []u16,
 +	hoyo_network_alloc_pat:    []u16,
 +	sdk_fallback_alloc_pat:    []u16,
-@@ -31,3 +34,3 @@ cfg := Config {
+@@ -31,3 +37,4 @@
 -	patch_rsa                 = true,
 -	patch_censorship          = true,
 -	sdk_url                   = "http://127.0.0.1:21000",
 +	patch_rsa                 = false,
 +	patch_censorship          = false,
++	local_tls_mitm            = false,
 +	sdk_url                   = "http://127.0.0.1:21001",
-@@ -37,0 +41,3 @@ cfg := Config {
+@@ -37,0 +45,4 @@
 +	apn_endpoint_lookup_pat   = {64, 83, 85, 86, 87, 65, 84, 65, 86, 65, 87, 72, 131, 236, 80, 72, 139, 5, UNK, UNK, UNK, UNK, 72, 51, 196, 72, 137, 68, 36, 72, 73, 139, 216, 72, 139, 250, 76, 139, 241},
++	apn_curl_vsetopt_pat      = {72, 137, 92, 36, 8, 72, 137, 108, 36, 16, 72, 137, 116, 36, 24, 87, 72, 131, 236, 48, 51, 237, 73, 139, 240, 72, 139, 217, 129, 250, 210, 0, 0, 0},
 +	hoyo_network_alloc_pat    = {232, UNK, UNK, UNK, UNK, 144, 128, 61, UNK, UNK, UNK, UNK, 0, 116, UNK, 72, 141, 84, 36, 72},
 +	sdk_fallback_alloc_pat    = {232, UNK, UNK, UNK, UNK, 144, 73, 139, 214, 72, 133, 219, 72, 15, 69, 211, 72, 137, 117, 136},
-diff --git a/main.odin b/main.odin
-index 6d8af66..29bc55d 100644
 --- a/main.odin
 +++ b/main.odin
-@@ -34,0 +35,13 @@ mod_thread :: proc () {
+@@ -34,0 +35,14 @@
 +	applied := 0
 +	if apn, aok := find_or_load_apn(); aok {
 +		patches.apn = apn
 +		if patches.install_apn_alloc() {
 +			applied += 1
 +			applied += 1 if patches.install_apn_endpoint_lookup() else 0
++			applied += 1 if patches.install_apn_tls_mitm() else 0
 +		}
 +	} else {
 +		log.error("failed to get apn?")
@@ -72,9 +76,9 @@ index 6d8af66..29bc55d 100644
 +		return
 +	}
 +
-@@ -55 +67,0 @@ mod_thread :: proc () {
+@@ -55 +68,0 @@
 -	applied := 0
-@@ -62,7 +74,11 @@ mod_thread :: proc () {
+@@ -62,7 +75,11 @@
 -	if apn, aok := find_or_load_apn(); aok {
 -		patches.apn = apn
 -		applied += 1 if patches.install_apn_alloc() else 0
@@ -93,13 +97,12 @@ index 6d8af66..29bc55d 100644
 +		} else {
 +			log.error("SDK_URL_ASSIGN_LOAD_FAILED source=SDK_FALLBACK")
 +		}
-diff --git a/patches/apn.odin b/patches/apn.odin
-index 304c2b3..1193a95 100644
 --- a/patches/apn.odin
 +++ b/patches/apn.odin
-@@ -6,0 +7 @@ import "shared:il2cure/e9c2da9/hook"
+@@ -6,0 +7 @@
 +import "shared:il2cure/e9c2da9/scan"
-@@ -17,0 +19,14 @@ orig_apn_alloc: Apn_Alloc_Proc
+@@ -16,0 +18,14 @@
++
 +Apn_Endpoint_Lookup_Proc :: #type proc "c" (
 +	rcx: rawptr,
 +	rdx: rawptr,
@@ -113,8 +116,7 @@ index 304c2b3..1193a95 100644
 +}
 +
 +orig_apn_endpoint_lookup: Apn_Endpoint_Lookup_Proc
-+
-@@ -36,0 +52,54 @@ install_apn_alloc :: proc () -> bool {
+@@ -36,0 +52,54 @@
 +install_apn_endpoint_lookup :: proc () -> bool {
 +	target, ok := scan.find_pattern_in_module(apn, cfg.cfg.apn_endpoint_lookup_pat)
 +	if !ok {
@@ -169,9 +171,9 @@ index 304c2b3..1193a95 100644
 +	return result
 +}
 +
-@@ -48,0 +118 @@ patched_apn_alloc :: proc "c" (
+@@ -48,0 +118 @@
 +		log_url_metadata("APN", s)
-@@ -50,7 +120,3 @@ patched_apn_alloc :: proc "c" (
+@@ -50,7 +120,3 @@
 -		if cfg.cfg.redirect_http && strings.has_prefix(s, "https://") &&
 -			strings.contains(s, ".mihoyo.com") {
 -			url_buf := cfg.cfg.sdk_url
@@ -182,7 +184,7 @@ index 304c2b3..1193a95 100644
 +		url_buf, allocated := sdk_native_target(s)
 +		if allocated { defer delete(url_buf, context.temp_allocator) }
 +		if url_buf != s {
-@@ -58,6 +124 @@ patched_apn_alloc :: proc "c" (
+@@ -58,6 +124 @@
 -			res := orig_apn_alloc(rcx,
 -				raw_data(url_buf), rawptr(uintptr(len(url_buf))), r9)
 -
@@ -190,15 +192,49 @@ index 304c2b3..1193a95 100644
 -				delete(url_buf, context.temp_allocator)
 -			}
 +			res := orig_apn_alloc(rcx, raw_data(url_buf), rawptr(uintptr(len(url_buf))), r9)
-diff --git a/patches/miu.odin b/patches/miu.odin
-index a0ae9ce..b104c36 100644
 --- a/patches/miu.odin
 +++ b/patches/miu.odin
-@@ -57,0 +58 @@ patched_miu :: proc "c" (
+@@ -57,0 +58 @@
 +	log_url_metadata("UNITY", url)
-diff --git a/patches/sdk_native.odin b/patches/sdk_native.odin
-new file mode 100644
-index 0000000..b73d862
+--- /dev/null
++++ b/patches/url_meta.odin
+@@ -0,0 +1,36 @@
++package patches
++
++import "core:log"
++import "core:strings"
++
++// 仅记录URL来源、scheme和主机；不记录路径、查询、片段或用户信息。
++log_url_metadata :: proc (source, url: string) {
++
++	scheme_len := 0
++	if strings.has_prefix(url, "https://") {
++		scheme_len = 5
++	} else if strings.has_prefix(url, "http://") {
++		scheme_len = 4
++	} else {
++		return
++	}
++	rest := url[scheme_len + 3:]
++	end := len(rest)
++	for i in 0..<len(rest) {
++		if rest[i] == '/' || rest[i] == '?' || rest[i] == '#' {
++			end = i
++			break
++		}
++	}
++	host := rest[:end]
++	safe := len(host) > 0
++	for ch in host {
++		if !((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') ||
++		     (ch >= '0' && ch <= '9') || ch == '.' || ch == '-' || ch == '_' ||
++		     ch == ':' || ch == '[' || ch == ']') {
++			safe = false
++		}
++	}
++	if !safe { host = "REDACTED" }
++	log.infof("SDK_URL_META source=%s scheme=%s host=%s", source, url[:scheme_len], host)
++}
 --- /dev/null
 +++ b/patches/sdk_native.odin
 @@ -0,0 +1,92 @@
@@ -294,45 +330,129 @@ index 0000000..b73d862
 +install_sdk_fallback_alloc :: proc (module: scan.Module_Info) -> bool {
 +	return install_sdk_string_alloc(module, cfg.cfg.sdk_fallback_alloc_pat, rawptr(patched_sdk_fallback_alloc), &orig_sdk_fallback_alloc, "SDK_FALLBACK")
 +}
-diff --git a/patches/url_meta.odin b/patches/url_meta.odin
-new file mode 100644
-index 0000000..4ba7de6
 --- /dev/null
-+++ b/patches/url_meta.odin
-@@ -0,0 +1,36 @@
++++ b/patches/tls_mitm.odin
+@@ -0,0 +1,123 @@
 +package patches
 +
++import "base:runtime"
 +import "core:log"
 +import "core:strings"
++import "shared:il2cure/e9c2da9/hook"
++import "../cfg"
 +
-+// 仅记录URL来源、scheme和主机；不记录路径、查询、片段或用户信息。
-+log_url_metadata :: proc (source, url: string) {
++Curl_Vsetopt_Proc :: #type proc "c" (
++	easy:   rawptr,
++	option: i32,
++	value:  rawptr,
++) -> i32
 +
-+	scheme_len := 0
-+	if strings.has_prefix(url, "https://") {
-+		scheme_len = 5
-+	} else if strings.has_prefix(url, "http://") {
-+		scheme_len = 4
-+	} else {
-+		return
++CURL_OK                  :: i32(0)
++CURLOPT_SSL_VERIFYPEER   :: i32(64)
++CURLOPT_SSL_VERIFYHOST   :: i32(81)
++CURLOPT_URL              :: i32(10002)
++CURL_URL_POINTER_OFFSET  :: uintptr(0x628)
++CURL_VERIFY_PEER_OFFSET  :: uintptr(0x390)
++CURL_VERIFY_HOST_OFFSET  :: uintptr(0x391)
++
++orig_apn_curl_vsetopt: Curl_Vsetopt_Proc
++
++apn_tls_url_allowed :: proc(url: string) -> bool {
++	if len(url) < 8 || !strings.equal_fold(url[:8], "https://") {
++		return false
 +	}
-+	rest := url[scheme_len + 3:]
-+	end := len(rest)
-+	for i in 0..<len(rest) {
-+		if rest[i] == '/' || rest[i] == '?' || rest[i] == '#' {
++	start := 8
++	end := len(url)
++	for i in start..<len(url) {
++		if url[i] == '/' || url[i] == '?' || url[i] == '#' {
 +			end = i
 +			break
 +		}
 +	}
-+	host := rest[:end]
-+	safe := len(host) > 0
-+	for ch in host {
-+		if !((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') ||
-+		     (ch >= '0' && ch <= '9') || ch == '.' || ch == '-' || ch == '_' ||
-+		     ch == ':' || ch == '[' || ch == ']') {
-+			safe = false
++	authority := url[start:end]
++	if len(authority) == 0 || strings.contains(authority, "@") {
++		return false
++	}
++	host := authority
++	if colon := strings.index(authority, ":"); colon >= 0 {
++		// 本地TLS入口只监听443；显式其他端口不得关闭校验。
++		if colon == 0 || authority[colon + 1:] != "443" {
++			return false
++		}
++		host = authority[:colon]
++	}
++	for allowed_host in cfg.cfg.tls_mitm_hosts {
++		if strings.equal_fold(host, allowed_host) {
++			return true
 +		}
 +	}
-+	if !safe { host = "REDACTED" }
-+	log.infof("SDK_URL_META source=%s scheme=%s host=%s", source, url[:scheme_len], host)
++	return false
++}
++
++apn_tls_current_url :: proc(easy: rawptr) -> string {
++	if easy == nil {
++		return ""
++	}
++	url := (^cstring)(uintptr(easy) + CURL_URL_POINTER_OFFSET)^
++	if url == nil {
++		return ""
++	}
++	return string(url)
++}
++
++apn_tls_set_verify :: proc(easy: rawptr, enabled: bool) {
++	if easy == nil {
++		return
++	}
++	value := u8(0)
++	if enabled {
++		value = 1
++	}
++	(^u8)(uintptr(easy) + CURL_VERIFY_PEER_OFFSET)^ = value
++	(^u8)(uintptr(easy) + CURL_VERIFY_HOST_OFFSET)^ = value
++}
++
++patched_apn_curl_vsetopt :: proc "c" (easy: rawptr, option: i32, value: rawptr) -> i32 {
++	context = runtime.default_context()
++	context.logger = detour_logger
++
++	if cfg.cfg.local_tls_mitm &&
++	   (option == CURLOPT_SSL_VERIFYPEER || option == CURLOPT_SSL_VERIFYHOST) &&
++	   apn_tls_url_allowed(apn_tls_current_url(easy)) {
++		zero := i64(0)
++		log.infof("APN_TLS_MITM_VERIFY_OPTION_DISABLED option=%v", option)
++		return orig_apn_curl_vsetopt(easy, option, &zero)
++	}
++
++	result := orig_apn_curl_vsetopt(easy, option, value)
++	if !cfg.cfg.local_tls_mitm || result != CURL_OK || option != CURLOPT_URL {
++		return result
++	}
++
++	allowed := apn_tls_url_allowed(apn_tls_current_url(easy))
++	apn_tls_set_verify(easy, !allowed)
++	if allowed {
++		log.info("APN_TLS_MITM_VERIFY_DISABLED")
++	}
++	return result
++}
++
++install_apn_tls_mitm :: proc() -> bool {
++	if !cfg.cfg.local_tls_mitm {
++		log.debug("local TLS MITM disabled. install skipped.")
++		return false
++	}
++	target := resolve_target(apn, cfg.cfg.apn_curl_vsetopt_pat)
++	if target == 0 {
++		log.error("APN Curl_vsetopt pattern not found. install failed.")
++		return false
++	}
++	trampoline, ok := hook.hook_inline_address(target, rawptr(patched_apn_curl_vsetopt))
++	if !ok {
++		log.error("APN Curl_vsetopt hook failed.")
++		return false
++	}
++	orig_apn_curl_vsetopt = cast(Curl_Vsetopt_Proc)trampoline
++	log.info("APN_TLS_MITM_READY")
++	return true
 +}

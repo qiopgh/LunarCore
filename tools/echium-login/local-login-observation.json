@@ -1,0 +1,117 @@
+{
+  "schema": "lunarcore-local-login-observation/v1",
+  "target_client": "20260813-0422-V4.5Live-16121062-OSPRODWin4.5.0-OSLive",
+  "observed_at": "2026-09-21T03:50:18.1980819+08:00",
+  "run_identity": "formal-login-hosts-443-tls-25",
+  "verification_owner": "designated_specialist",
+  "main_agent_activity": "交付文件哈希与源码补丁重构核验；不执行逆向、调试或客户端操作",
+  "result": "LOCAL_PASSWORD_AND_LOGIN_CHAIN_OBSERVED_USER_AGREEMENT_GATE",
+  "complete_login_claimed": false,
+  "exact_scope_dll_sha256": "43dcd8a96d9a950f61a467fd608fb6534c5e3afeff943d1c1630ed8321b1194b",
+  "runtime_config_sha256": "4bf9a1c6b516e2c462817bbd8e9891085d5b84dbbbfa4ca552971540a7409cdf",
+  "runtime_fix": {
+    "implementation_sha256": "3f85b30f21628de1254d37c1aa96f8bf6926b20232889598a6b1e713e8e3e03e",
+    "patch_sha256": "a502b3ae39551d0f22f48454bad41ed5b546e883126af89bd82b5403a4a2182b",
+    "changed_function": "installProxyPathHooks",
+    "changed_field": "WINHTTP_OPTION_IGNORE_CERT_REVOCATION_OFFLINE",
+    "option": 155,
+    "value": true,
+    "scope_gate": "HYPass.dll caller plus exact-60 WinHttpConnect host mapping",
+    "system_proxy_modified": false,
+    "system_certificate_store_modified": false,
+    "payload_bytes_read": 0,
+    "credential_text_read": false
+  },
+  "independent_runtime_script_required_in_observed_run": true,
+  "winhttp_fix_integrated_in_delivered_dll": false,
+  "baseline": {
+    "run_identity": "formal-login-hosts-443-tls-22",
+    "events_sha256": "8c04f7fd94469176f122b5fda0f27b484125905d3299f2ead822362d001c9aac",
+    "secure_failure_flags": 1,
+    "async_error": 12017,
+    "behavior": "WINHTTP_CALLBACK_STATUS_SECURE_FAILURE followed by ERROR_WINHTTP_OPERATION_CANCELLED"
+  },
+  "modified": {
+    "events_sha256": "68ce41f8ee5d0be4bf9984a7d32fef83c7de8de74d77bd5b3b99f4687e952ee6",
+    "target_host": "hkrpg-sdk-os.hoyoverse.com",
+    "exact_scope_match": true,
+    "proxy_option_applied": true,
+    "security_flags": 13056,
+    "security_option_applied": true,
+    "revocation_offline_option_applied": true,
+    "winhttp_statuses": [
+      4194304,
+      131072
+    ],
+    "secure_failure_observed": false,
+    "async_error_observed": false
+  },
+  "local_login_chain": [
+    {
+      "method": "POST",
+      "path": "/hkrpg_global/account/ma-passport/api/appLoginByPassword",
+      "status": 200,
+      "upstream": "127.0.0.1:21000"
+    },
+    {
+      "method": "POST",
+      "path": "/hkrpg_global/combo/granter/login/v2/login",
+      "status": 200,
+      "upstream": "127.0.0.1:21000"
+    }
+  ],
+  "user_action_gate": {
+    "title": "用户协议和隐私政策提示",
+    "checkboxes_selected": false,
+    "accept_clicked": false,
+    "further_input_performed": false,
+    "reason": "接受法律条款需要用户决定，现有授权不包含代为同意"
+  },
+  "screenshots": [
+    {
+      "delay_ms": 400,
+      "sha256": "73937aee63e95e31c0309ef5e09da770d8ffba3f55d544202860cfd23864dd2b",
+      "semantic_result": "用户协议和隐私政策提示"
+    },
+    {
+      "delay_ms": 1100,
+      "sha256": "5139f13cbc716d796bf691aff1db1ebc4f58a6765d839d30a532794e06e23f3f",
+      "semantic_result": "用户协议和隐私政策提示"
+    },
+    {
+      "delay_ms": 2500,
+      "sha256": "3df63592eb86f108283e315837ed1ec1df24410675d0f2abf994a0e59737cf10",
+      "semantic_result": "用户协议和隐私政策提示"
+    },
+    {
+      "delay_ms": 15000,
+      "sha256": "9716009a607937e1e026a5141ee43ee0369fce15689569e4c6afc1b74efc6984",
+      "semantic_result": "用户协议和隐私政策提示"
+    }
+  ],
+  "cleanup": {
+    "all_started_processes_exited": true,
+    "system_network_equal": true,
+    "remaining_processes": [],
+    "tcp": [],
+    "udp": []
+  },
+  "evidence_sha256": {
+    "2026-09-21_reverse-starrail-local-login-bridge-report.md": "8141a4721d3dd33bd93f8d35421b1bd24ab6fd69f6d7b7fcfbffd4d1b2006ef9",
+    "login-bridge-result.json": "968a8042a7aa0115cf375bd91608bec8f2e681f73a10a955cc0ec5ce3ab059df",
+    "VERIFICATION-login-bridge-supplement.txt": "112dc797d12d0dd0b2aa37734243f71019653796639b82ebd0134481c14fcfc1",
+    "run25-events.jsonl": "68ce41f8ee5d0be4bf9984a7d32fef83c7de8de74d77bd5b3b99f4687e952ee6",
+    "w04_4a_serializer_observer_revocation_offline.js": "3f85b30f21628de1254d37c1aa96f8bf6926b20232889598a6b1e713e8e3e03e",
+    "winhttp-revocation-offline-minimal.patch": "a502b3ae39551d0f22f48454bad41ed5b546e883126af89bd82b5403a4a2182b",
+    "start-formal-login-hosts-443-tls-final-exact.ps1": "8706bc81d7d7499005d460bc39e32d7a6f2c294b7ad7b39e993ec275b4d50c07",
+    "cleanup-formal-login-hosts-443-tls-final-exact.ps1": "d55de8cc29ab5a0134b66b26b13bdfd869734b52c33a69ff9e558c6f8154f7f3"
+  },
+  "unverified": [
+    "LoginFinish",
+    "gateway_session",
+    "leave_login_wait",
+    "native_dll_only_login",
+    "native_linux"
+  ],
+  "remaining_boundary": "未接受用户协议和隐私政策，因此未观察 LoginFinish、网关会话或客户端退出登录等待阶段。"
+}
